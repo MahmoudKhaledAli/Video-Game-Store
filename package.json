@@ -8,10 +8,13 @@
 	"dependencies": {
 		"express": "4.13.x",
 		"path": "",
-		"sql": ""
+		"mysql": "",
+		"body-parser": "",
+		"ejs": "",
+		"client-sessions": ""
 	},
 	"repository": {},
 	"engines": {
 		"node": "4.x"
-	} 
+	}
 }
