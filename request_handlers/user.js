@@ -1,47 +1,53 @@
 var sqlConnector = require('./sqlConnector.js');
 var ejs = require('ejs');
+var path = require('path');
 
 var register = function(req, res) {
   console.log(req.body);
   sqlConnector.getConnection(function(err, connection) {
     console.log(err);
-    connection.query("Insert into user values (?, ?, ?, ?, ?)",
-    [req.body.username, req.body.password, req.body.email, new Date(), req.body.address],
+    connection.query("Insert into user values (?, ?, ?, ?)",
+    [req.body.username, req.body.password, req.body.email, req.body.address],
     function(err, rows) {
-        res.render('../static/index.ejs', { username: req.body.username});
-        connection.release();
+      console.log(err);
+        renderHomePage(req, res, connection);
     });
   });
 };
 
 var login = function(req, res) {
   console.log(req.body);
+  if (req.body.username == 'Admin' && req.body.password == 'password') {
+    req.userSession.username = 'Admin';
+    res.sendFile(path.resolve(__dirname+'/../static/admin.html'));
+    return;
+  }
   sqlConnector.getConnection(function(err, connection) {
     connection.query("Select username, password FROM user WHERE username = ? and password = ?",
     [req.body.username, req.body.password],
     function(err, rows) {
-      console.log(rows);
       if (rows.length == 0) {
         res.render('../static/register.ejs', { message: "Incorrect Username and/or Password"});
       } else {
         req.userSession.username = req.body.username;
-        res.render('../static/index.ejs', { username: req.userSession.username});
+        renderHomePage(req, res, connection);
       }
-      connection.release();
     });
   });
 };
 
-var homepage = function(req, res) {
-  if (req.userSession) {
-    res.render('../static/index.ejs', { username: req.userSession.username});
-  } else {
-    res.render('../static/index.ejs', { username: 'Guest'});
-  }
+function renderHomePage(req, res, connection) {
+  connection.query("SELECT * FROM product ORDER BY sales DESC", function(err, rows) {
+      if (req.userSession) {
+        res.render('../static/home.ejs', { username: req.body.username, sellers: rows });
+      } else {
+        res.render('../static/home.ejs', { username: 'Guest', sellers: rows });
+      }
+      connection.release()
+  });
 }
 
 module.exports = {
   register: register,
   login: login,
-  homepage: homepage
 }

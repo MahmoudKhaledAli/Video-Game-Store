@@ -45,7 +45,6 @@ app.get('/', function(req, res) {
 //Application routes
 app.post('/register', handlers.register);
 app.post('/login', handlers.login);
-app.post('/home', handlers.homepage);
 
 // start server on the specified port and binding host
 app.listen('8000', '0.0.0.0', function() {
