@@ -37,9 +37,10 @@ var login = function(req, res) {
 };
 
 function renderHomePage(req, res, connection) {
+  console.log(req.userSession)
   connection.query("SELECT * FROM product ORDER BY sales DESC", function(err, rows) {
-      if (req.userSession) {
-        res.render('../static/home.ejs', { username: req.body.username, sellers: rows });
+      if (req.userSession.username) {
+        res.render('../static/home.ejs', { username: req.userSession.username, sellers: rows });
       } else {
         res.render('../static/home.ejs', { username: 'Guest', sellers: rows });
       }
@@ -47,7 +48,22 @@ function renderHomePage(req, res, connection) {
   });
 }
 
+var homepage = function(req, res) {
+  sqlConnector.getConnection(function(err, connection) {
+    renderHomePage(req, res, connection);
+  });
+};
+
+var logout = function(req, res) {
+  req.userSession.destroy();
+  sqlConnector.getConnection(function(err, connection) {
+    renderHomePage(req, res, connection);
+  });
+};
+
 module.exports = {
   register: register,
   login: login,
+  homepage: homepage,
+  logout: logout,
 }

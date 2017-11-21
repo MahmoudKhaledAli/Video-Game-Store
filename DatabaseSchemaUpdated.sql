@@ -28,6 +28,7 @@ CREATE TABLE IF NOT EXISTS `games`.`user` (
   `password` NVARCHAR(20) NOT NULL,
   `email` NVARCHAR(50) NOT NULL,
   `address` NVARCHAR(100) NOT NULL,
+  `banned` BIT NOT NULL DEFAULT 0,
   PRIMARY KEY (`username`),
   UNIQUE INDEX `email_UNIQUE` (`email` ASC))
 ENGINE = InnoDB;

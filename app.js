@@ -38,13 +38,16 @@ app.use(sessions({
 }));
 
 // serve the index page
-app.get('/', function(req, res) {
+app.get('/', handlers.homepage);
+app.get('/registration', function(req, res) {
 	res.render(path.join(__dirname + '/static/register.ejs'), { message: "" });
 });
 
 //Application routes
 app.post('/register', handlers.register);
 app.post('/login', handlers.login);
+app.get('/users', handlers.viewUsers);
+app.get('/logout', handlers.logout);
 
 // start server on the specified port and binding host
 app.listen('8000', '0.0.0.0', function() {
