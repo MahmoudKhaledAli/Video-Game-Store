@@ -7,4 +7,5 @@ module.exports = {
   homepage: user.homepage,
   viewUsers: admin.viewUsers,
   logout: user.logout,
+  ban: user.ban,
 }

@@ -9,6 +9,7 @@ var viewUsers = function(req, res) {
     connection.query("SELECT * FROM user",
     function(err, rows) {
       console.log(err);
+      console.log(rows[0]);
         res.render('../static/users.ejs', { users: rows })
     });
   });

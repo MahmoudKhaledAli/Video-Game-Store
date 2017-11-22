@@ -19,6 +19,8 @@
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="assets/js/user.js"></script>
+
 
   </head>
 
@@ -34,18 +36,12 @@
         <div class="collapse navbar-collapse" id="navbarResponsive">
           <ul class="navbar-nav ml-auto">
             <li class="nav-item active">
-              <a class="nav-link" href="#">Home
+              <a class="nav-link" href="/">Home
                 <span class="sr-only">(current)</span>
               </a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="#">About</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="#">Services</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="#">Contact</a>
+              <a class="nav-link" onclick="logout()" href="">Logout</a>
             </li>
           </ul>
         </div>
@@ -62,9 +58,15 @@
               <li class="list-group-item">
                   <h4><strong><%= users[i].username %></a></h4>
                   <h5><%= users[i].email %></h5>
-                  <a href="#" class="btn btn-info btn-lg">
-                    <span class="glyphicon glyphicon-ban-circle"></span> Ban
-                  </a>
+                  <%if (!users[i].banned) {%>
+                    <a href="#" id="<%=users[i].username%>" class="btn btn-danger btn-lg ban">
+                      Ban
+                    </a>
+                  <%} else {%>
+                    <a href="#" id="<%=users[i].username%>" onclick="" class="btn btn-info btn-lg ban">
+                      Unban
+                    </a>
+                    <%}%>
               </li>
             <%}%>
           </ul>

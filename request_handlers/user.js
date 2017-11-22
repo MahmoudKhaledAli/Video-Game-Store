@@ -6,12 +6,30 @@ var register = function(req, res) {
   console.log(req.body);
   sqlConnector.getConnection(function(err, connection) {
     console.log(err);
-    connection.query("Insert into user values (?, ?, ?, ?)",
-    [req.body.username, req.body.password, req.body.email, req.body.address],
+    connection.query("SELECT * FROM user WHERE username = ?",
+    [req.body.username],
     function(err, rows) {
-      console.log(err);
-        renderHomePage(req, res, connection);
+      if (rows.length == 0) {
+        connection.query("SELECT * FROM user WHERE email = ?",
+        [req.body.email],
+        function(err, rows) {
+          if (rows.length == 0) {
+            connection.query("Insert into user values (?, ?, ?, ?, ?)",
+            [req.body.username, req.body.password, req.body.email, req.body.address, 0],
+            function(err, rows) {
+              console.log(err);
+              req.userSession.username = req.body.username;
+              res.send('2');
+            });
+          } else {
+            res.send('1');
+          }
+        });
+      } else {
+        res.send('0');
+      }
     });
+
   });
 };
 
@@ -19,18 +37,21 @@ var login = function(req, res) {
   console.log(req.body);
   if (req.body.username == 'Admin' && req.body.password == 'password') {
     req.userSession.username = 'Admin';
-    res.sendFile(path.resolve(__dirname+'/../static/admin.html'));
+    res.send('2');
     return;
   }
   sqlConnector.getConnection(function(err, connection) {
-    connection.query("Select username, password FROM user WHERE username = ? and password = ?",
+    connection.query("Select username, password, banned FROM user WHERE username = ? and password = ?",
     [req.body.username, req.body.password],
     function(err, rows) {
+      console.log(rows);
       if (rows.length == 0) {
-        res.render('../static/register.ejs', { message: "Incorrect Username and/or Password"});
+        res.send('0');
+      } else if (rows[0].banned != 0) {
+        res.send('1');
       } else {
         req.userSession.username = req.body.username;
-        renderHomePage(req, res, connection);
+        res.send('2');
       }
     });
   });
@@ -39,10 +60,12 @@ var login = function(req, res) {
 function renderHomePage(req, res, connection) {
   console.log(req.userSession)
   connection.query("SELECT * FROM product ORDER BY sales DESC", function(err, rows) {
-      if (req.userSession.username) {
+      if (!req.userSession.username) {
+        res.render('../static/home.ejs', { username: 'Guest', sellers: rows });
+      } else if (req.userSession.username != 'Admin') {
         res.render('../static/home.ejs', { username: req.userSession.username, sellers: rows });
       } else {
-        res.render('../static/home.ejs', { username: 'Guest', sellers: rows });
+        res.sendFile(path.resolve(__dirname+'/../static/admin.html'));
       }
       connection.release()
   });
@@ -61,9 +84,21 @@ var logout = function(req, res) {
   });
 };
 
+var ban = function(req, res) {
+  console.log(req);
+  sqlConnector.getConnection(function(err, connection) {
+    connection.query("UPDATE user SET banned = banned ^ 1 WHERE username = ?",
+    [req.query.username],
+    function() {
+      res.end();
+    })
+  });
+}
+
 module.exports = {
   register: register,
   login: login,
   homepage: homepage,
   logout: logout,
+  ban: ban,
 }

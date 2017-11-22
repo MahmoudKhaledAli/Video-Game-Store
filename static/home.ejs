@@ -15,6 +15,7 @@
 
     <!-- Custom styles for this template -->
     <link href="css/heroic-features.css" rel="stylesheet">
+    <script type="text/javascript" src="assets/js/user.js"></script>
 
   </head>
 
@@ -45,7 +46,7 @@
             <%}%>
             <%if (username != 'Guest') {%>
             <li class="nav-item">
-              <a class="nav-link" href="logout">Logout</a>
+              <a class="nav-link" onclick="logout()" href="">Logout</a>
             </li>
             <%}%>
           </ul>
