@@ -10,7 +10,9 @@ var viewUsers = function(req, res) {
     function(err, rows) {
       console.log(err);
       console.log(rows[0]);
-        res.render('../static/users.ejs', { users: rows })
+      connection.release();
+      console.log(rows[0].datecreated);
+      res.render('../static/users.ejs', { users: rows });
     });
   });
 };

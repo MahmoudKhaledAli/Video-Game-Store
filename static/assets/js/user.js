@@ -1,5 +1,7 @@
 $(document).ready(function() {
-  $(".ban").click(function() {
+  $(".ban").click(function(e) {
+    e.preventDefault();
+    console.log(this);
     banUnBanUser(this)
   })
 });
@@ -9,12 +11,12 @@ function banUnBanUser(button) {
   $.get('banuser', { username: button.id }, function(data) {
     $(button).toggleClass('btn-danger');
     $(button).toggleClass('btn-info');
-    console.log();
     if ($.trim($(button).html()) == 'Ban') {
-      alert('User banned');
+      swal('User banned', '', 'success');
+      console.log('woow');
       $(button).html('Unban');
     } else {
-      alert('User unbanned');
+      swal('User unbanned', '', 'success');
       $(button).html('Ban');
     }
   });

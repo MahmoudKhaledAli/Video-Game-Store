@@ -12,14 +12,18 @@
 
     <!-- Bootstrap core CSS -->
 
-    <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <!-- <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet"> -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
 
     <!-- Custom styles for this template -->
-    <link href="css/shop-homepage.css" rel="stylesheet">
+    <!-- <link href="css/shop-homepage.css" rel="stylesheet"> -->
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
     <script type="text/javascript" src="assets/js/user.js"></script>
+    <script src="/sweetalert2/dist/sweetalert2.all.min.js"></script>
+    <link rel="stylesheet" href="/css/users-list.css">
+
 
 
   </head>
@@ -27,20 +31,27 @@
   <body>
 
     <!-- Navigation -->
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+    <nav class="navbar navbar-expand-lg navbar-dark navbar-inverse fixed-top">
       <div class="container">
         <a class="navbar-brand" href="#">Welcome, Admin</a>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
-          <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarResponsive">
-          <ul class="navbar-nav ml-auto">
+        <div class="" id="navbarResponsive">
+          <ul class="navbar-nav nav ml-auto navbar-right">
             <li class="nav-item active">
               <a class="nav-link" href="/">Home
                 <span class="sr-only">(current)</span>
               </a>
             </li>
             <li class="nav-item">
+              <li class="nav-item">
+                <a class="nav-link" onclick="" href="">PS4</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" onclick="" href="">Xbox One</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" onclick="" href="">PC</a>
+              </li>
+              <li>
               <a class="nav-link" onclick="logout()" href="">Logout</a>
             </li>
           </ul>
@@ -49,29 +60,56 @@
     </nav>
 
     <!-- Page Content -->
-    <div class="container">
-      <div class="col-md-10 col-lg-offset-">
-          </br>
-          <ul class="list-group">
-              <li class="list-group-item active panel-title">Users</li>
-              <%for (var i = 0; i < users.length; i++) {%>
-              <li class="list-group-item">
-                  <h4><strong><%= users[i].username %></a></h4>
-                  <h5><%= users[i].email %></h5>
-                  <%if (!users[i].banned) {%>
-                    <a href="#" id="<%=users[i].username%>" class="btn btn-danger btn-lg ban">
-                      Ban
-                    </a>
-                  <%} else {%>
-                    <a href="#" id="<%=users[i].username%>" onclick="" class="btn btn-info btn-lg ban">
-                      Unban
-                    </a>
-                    <%}%>
-              </li>
-            <%}%>
-          </ul>
-      </div>
+
+    <hr>
+<div class="container bootstrap snippet">
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="main-box no-header clearfix">
+                <div class="main-box-body clearfix">
+                    <div class="table-responsive">
+                        <table class="table user-list">
+                            <thead>
+                                <tr>
+                                <th><span>User</span></th>
+                                <th><span>Created</span></th>
+                                <th><span>Email</span></th>
+                                <th>&nbsp;</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                              <%for (var i = 0; i < users.length; i++) {%>
+                                <tr>
+                                    <td>
+                                        <img src="https://bootdey.com/img/Content/user_1.jpg" alt="">
+                                        <a href="#" class="user-link"><%=users[i].username%></a>
+                                    </td>
+                                    <td><%=users[i].datecreated%></td>
+                                    <td>
+                                        <a href="#"><%=users[i].email%></a>
+                                    </td>
+                                    <td style="width: 20%;">
+                                      <%if (!users[i].banned) {%>
+                                        <a href="#" id="<%=users[i].username%>" class="btn btn-danger btn-md ban">
+                                          Ban
+                                        </a>
+                                      <%} else {%>
+                                        <a href="#" id="<%=users[i].username%>" class="btn btn-info btn-md ban">
+                                          Unban
+                                        </a>
+                                        <%}%>
+                                    </td>
+                                </tr>
+                                <%}%>
+
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
+</div>
     </br>
     <!-- /.container -->
 

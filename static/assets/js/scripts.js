@@ -33,9 +33,9 @@ jQuery(document).ready(function() {
       $.post("login", { username: $("#login-username").val(), password: $("#login-password").val() }, function(data) {
         console.log(data);;
         if (data == '0') {
-          alert('Invalid Username and/or Password.');
+          swal('Login failed!', 'Invalid Username and/or Password.', 'error');
         } else if (data == '1') {
-          alert('This Account is Banned.');
+          swal('Login failed!', 'This Account is Banned.', 'error');
         } else if (data == '2') {
           window.location.replace('/');
         }
@@ -53,9 +53,9 @@ jQuery(document).ready(function() {
       function(data) {
         console.log(data);;
         if (data == '0') {
-          alert('Username already exists');
+          swal('Registration failed!', 'Username already exists', 'error');
         } else if (data == '1') {
-          alert('This E-mail is already registered to an account.');
+          swal('Registration failed!', 'E-mail is already registered to an account', 'error');
         } else if (data == '2') {
           window.location.replace('/');
         }

@@ -16,9 +16,11 @@
 
         <!-- CSS -->
         <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Roboto:400,100,300,500">
-        <link rel="stylesheet" href="assets/bootstrap/css/bootstrap.min.css">
+        <!-- <link rel="stylesheet" href="assets/bootstrap/css/bootstrap.min.css"> -->
+        <!-- <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet"> -->
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
         <link rel="stylesheet" href="assets/font-awesome/css/font-awesome.min.css">
-		<link rel="stylesheet" href="assets/css/form-elements.css">
+	      <link rel="stylesheet" href="assets/css/form-elements.css">
         <link rel="stylesheet" href="assets/css/style.css">
 
         <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
@@ -35,9 +37,34 @@
         <link rel="apple-touch-icon-precomposed" sizes="72x72" href="assets/ico/apple-touch-icon-72-precomposed.png">
         <link rel="apple-touch-icon-precomposed" href="assets/ico/apple-touch-icon-57-precomposed.png">
 
+
     </head>
 
     <body>
+
+      <nav class="navbar navbar-expand-lg navbar-dark navbar-inverse fixed-top">
+        <div class="container">
+          <a class="navbar-brand" href="#">Welcome, Guest</a>
+          <div class="" id="navbarResponsive">
+            <ul class="navbar-nav nav ml-auto navbar-right">
+              <li class="nav-item active">
+                <a class="nav-link" href="/">Home
+                  <span class="sr-only">(current)</span>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" onclick="" href="">PS4</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" onclick="" href="">Xbox One</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" onclick="" href="">PC</a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </nav>
         <!-- Top content -->
         <div class="top-content">
               <div class="container">
@@ -121,6 +148,8 @@
         <script src="assets/js/jquery-1.11.1.min.js"></script>
         <script src="assets/bootstrap/js/bootstrap.min.js"></script>
         <script src="assets/js/scripts.js"></script>
+        <script src="/sweetalert2/dist/sweetalert2.all.min.js"></script>
+
 
         <!--[if lt IE 10]>
             <script src="assets/js/placeholder.js"></script>

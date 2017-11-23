@@ -14,18 +14,21 @@ var register = function(req, res) {
         [req.body.email],
         function(err, rows) {
           if (rows.length == 0) {
-            connection.query("Insert into user values (?, ?, ?, ?, ?)",
-            [req.body.username, req.body.password, req.body.email, req.body.address, 0],
+            connection.query("Insert into user values (?, ?, ?, ?, ?, ?)",
+            [req.body.username, req.body.password, req.body.email, req.body.address, 0, new Date()],
             function(err, rows) {
               console.log(err);
               req.userSession.username = req.body.username;
+              connection.release();
               res.send('2');
             });
           } else {
+            connection.release();
             res.send('1');
           }
         });
       } else {
+        connection.release();
         res.send('0');
       }
     });
@@ -46,11 +49,14 @@ var login = function(req, res) {
     function(err, rows) {
       console.log(rows);
       if (rows.length == 0) {
+        connection.release();
         res.send('0');
       } else if (rows[0].banned != 0) {
+        connection.release();
         res.send('1');
       } else {
         req.userSession.username = req.body.username;
+        connection.release();
         res.send('2');
       }
     });
@@ -67,7 +73,7 @@ function renderHomePage(req, res, connection) {
       } else {
         res.sendFile(path.resolve(__dirname+'/../static/admin.html'));
       }
-      connection.release()
+      connection.release();
   });
 }
 
@@ -85,11 +91,13 @@ var logout = function(req, res) {
 };
 
 var ban = function(req, res) {
-  console.log(req);
+  console.log(req.query.username);
   sqlConnector.getConnection(function(err, connection) {
     connection.query("UPDATE user SET banned = banned ^ 1 WHERE username = ?",
     [req.query.username],
     function() {
+      console.log('heere');
+      connection.release();
       res.end();
     })
   });

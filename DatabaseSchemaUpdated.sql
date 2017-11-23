@@ -29,6 +29,7 @@ CREATE TABLE IF NOT EXISTS `games`.`user` (
   `email` NVARCHAR(50) NOT NULL,
   `address` NVARCHAR(100) NOT NULL,
   `banned` INT NOT NULL DEFAULT 0,
+  `datecreated` DATE NOT NULL,
   PRIMARY KEY (`username`),
   UNIQUE INDEX `email_UNIQUE` (`email` ASC))
 ENGINE = InnoDB;
@@ -63,6 +64,7 @@ CREATE TABLE IF NOT EXISTS `games`.`order` (
   `idproduct` INT NOT NULL,
   `quantity` INT NOT NULL,
   `status` INT NOT NULL,
+  `datecreated` DATE NOT NULL,
   PRIMARY KEY (`idorder`, `username`, `idproduct`))
 ENGINE = InnoDB;
 

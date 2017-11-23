@@ -8,8 +8,9 @@ var mysql = require('mysql');
 var LocaldbConfig = {
     host:"localhost",
     user:"root",
-    password:"",
-    database:"games"
+    password:"aaaaaa",
+    database:"games",
+    dateStrings: 'date'
 };
 
 //module.exports = mysql.createPool(OnlinedbConfig);
