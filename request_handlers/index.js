@@ -8,4 +8,6 @@ module.exports = {
   viewUsers: admin.viewUsers,
   logout: user.logout,
   ban: user.ban,
+  viewOrders: admin.viewOrders,
+  myOrders: user.myOrders,
 }

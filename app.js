@@ -49,6 +49,8 @@ app.post('/login', handlers.login);
 app.get('/users', handlers.viewUsers);
 app.get('/logout', handlers.logout);
 app.get('/banuser', handlers.ban);
+app.get('/orders', handlers.viewOrders);
+app.get('/myorders', handlers.myOrders);
 
 // start server on the specified port and binding host
 app.listen('8000', '0.0.0.0', function() {
