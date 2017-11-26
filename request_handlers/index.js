@@ -10,4 +10,5 @@ module.exports = {
   ban: user.ban,
   viewOrders: admin.viewOrders,
   myOrders: user.myOrders,
+  updateOrder: admin.updateOrder,
 }

@@ -21,6 +21,7 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
     <script type="text/javascript" src="assets/js/user.js"></script>
+    <script type="text/javascript" src="assets/js/orders.js"></script>
     <script src="/sweetalert2/dist/sweetalert2.all.min.js"></script>
     <link rel="stylesheet" href="/css/users-list.css">
 
@@ -97,32 +98,32 @@
                                     </td>
                                     <td>
                                       <div class="form-group">
-                                        <select id="<%=orders[i].idorder%>st" class="form-control" id="sel1" style="width: 50%;">
+                                        <select id="<%=orders[i].idorder%>st" class="form-control" id="sel1" style="width: 55%;">
                                           <%if (orders[i].status == 0) {%>
-                                          <option selected="selected">Pending</option>
+                                          <option value="0" selected="selected">Pending</option>
                                           <% } else { %>
-                                          <option>Pending</option>
+                                          <option value="0">Pending</option>
                                           <%}%>
                                           <%if (orders[i].status == 1) {%>
-                                          <option selected="selected">Approved</option>
+                                          <option value="1" selected="selected">Approved</option>
                                           <% } else { %>
-                                          <option>Approved</option>
+                                          <option value="1">Approved</option>
                                           <%}%>
                                           <%if (orders[i].status == 2) {%>
-                                          <option selected="selected">Shipped</option>
+                                          <option value="2" selected="selected">Shipped</option>
                                           <% } else { %>
-                                          <option>Shipped</option>
+                                          <option value="2">Shipped</option>
                                           <%}%>
                                           <%if (orders[i].status == 3) {%>
-                                          <option selected="selected">Delivered</option>
+                                          <option value="3" selected="selected">Delivered</option>
                                           <% } else { %>
-                                          <option>Delivered</option>
+                                          <option value="3">Delivered</option>
                                           <%}%>
                                         </select>
                                       </div>
                                     </td>
                                     <td style="width: 20%;">
-                                        <a href="#" id="<%=orders[i].idorder%>up" class="btn btn-danger btn-md ban">
+                                        <a href="#" id="<%=orders[i].idorder%>up" class="btn btn-primary btn-md update" style="margin-top:-15px">
                                           Update Status
                                         </a>
                                     </td>

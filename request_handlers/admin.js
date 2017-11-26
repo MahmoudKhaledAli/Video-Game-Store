@@ -49,7 +49,21 @@ var viewOrders = function(req, res) {
   });
 };
 
+var updateOrder = function(req, res) {
+  sqlConnector.getConnection(function(err, connection) {
+    console.log(err);
+    connection.query("UPDATE `games`.`order` SET status = ? WHERE idorder = ?",
+    [req.query.newStatus, req.query.idorder],
+    function(err, rows) {
+      console.log(err);
+      connection.release();
+      res.end()
+    });
+  });
+};
+
 module.exports = {
   viewUsers: viewUsers,
   viewOrders: viewOrders,
+  updateOrder: updateOrder,
 }

@@ -51,6 +51,7 @@ app.get('/logout', handlers.logout);
 app.get('/banuser', handlers.ban);
 app.get('/orders', handlers.viewOrders);
 app.get('/myorders', handlers.myOrders);
+app.get('/updateorder', handlers.updateOrder);
 
 // start server on the specified port and binding host
 app.listen('8000', '0.0.0.0', function() {
