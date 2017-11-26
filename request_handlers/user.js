@@ -103,7 +103,7 @@ var ban = function(req, res) {
   });
 }
 
-var myOrders = function(req, res) {
+var account = function(req, res) {
   sqlConnector.getConnection(function(err, connection) {
     console.log(err);
     connection.query("SELECT * FROM `games`.`order` INNER JOIN product On `games`.`order`.idproduct = product.idproduct WHERE username = ? ORDER BY datecreated DESC, idorder",
@@ -130,11 +130,28 @@ var myOrders = function(req, res) {
         }
       }
       console.log(orders[0].items);
-      connection.release();
-      res.render('../static/myorders.ejs', { orders: orders, username: req.userSession.username });
+      connection.query("SELECT address FROM user WHERE username = ?",
+      [req.userSession.username],
+      function(err, rows) {
+        console.log(err);
+        console.log(rows[0]);
+        connection.release();
+        res.render('../static/account.ejs', { orders: orders, username: req.userSession.username, address: rows[0].address });
+      });
     });
   });
-}
+};
+
+var updateAddress = function(req, res) {
+  sqlConnector.getConnection(function(err, connection) {
+    connection.query("UPDATE user SET address = ? WHERE username = ?",
+    [req.body.address, req.userSession.username],
+    function() {
+      connection.release();
+      res.end();
+    })
+  });
+};
 
 module.exports = {
   register: register,
@@ -142,5 +159,6 @@ module.exports = {
   homepage: homepage,
   logout: logout,
   ban: ban,
-  myOrders: myOrders,
+  account: account,
+  updateAddress: updateAddress,
 }

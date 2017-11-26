@@ -2,8 +2,12 @@ $(document).ready(function() {
   $(".ban").click(function(e) {
     e.preventDefault();
     console.log(this);
-    banUnBanUser(this)
-  })
+    banUnBanUser(this);
+  });
+  $("#updateaddress").click(function(e) {
+    e.preventDefault();
+    updateAddress($("#form-address").val());
+  });
 });
 
 function banUnBanUser(button) {
@@ -25,5 +29,11 @@ function banUnBanUser(button) {
 function logout() {
   $.get("logout", function(data) {
     window.location.replace("/")
+  });
+}
+
+function updateAddress(newAddress) {
+  $.post('updateaddress', { address: newAddress }, function(data) {
+    swal('Address updated', '', 'success');
   });
 }

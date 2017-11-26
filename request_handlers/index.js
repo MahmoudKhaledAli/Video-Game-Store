@@ -9,6 +9,7 @@ module.exports = {
   logout: user.logout,
   ban: user.ban,
   viewOrders: admin.viewOrders,
-  myOrders: user.myOrders,
+  account: user.account,
   updateOrder: admin.updateOrder,
+  updateAddress: user.updateAddress,
 }
