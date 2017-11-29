@@ -1,6 +1,6 @@
 var user = require('./user.js')
 var admin = require('./admin.js')
-
+var product = require('./product.js')
 module.exports = {
   register: user.register,
   login: user.login,
@@ -12,4 +12,5 @@ module.exports = {
   account: user.account,
   updateOrder: admin.updateOrder,
   updateAddress: user.updateAddress,
+  viewProduct: product.viewProduct
 }

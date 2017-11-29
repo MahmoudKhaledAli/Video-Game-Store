@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>Video Game Store</title>
+
+    <!-- Bootstrap core CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+
+    <!-- Custom styles for this template -->
+    <link href="css/shop-item.css" rel="stylesheet">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="assets/js/user.js"></script>
+    <script src="/sweetalert2/dist/sweetalert2.all.min.js"></script>
+    <link rel="stylesheet" href="/css/users-list.css">
+
+    
+  </head>
+
+  <body>
+
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-inverse bg-dark fixed-top">
+      <div class="container">
+        <a class="navbar-brand" href="#">Welcome, <%= username %></a>
+        <div class="collapse navbar-collapse" id="navbarResponsive">
+          <ul class="navbar-nav nav ml-auto navbar-right">
+            <li class="nav-item">
+              <a class="nav-link" href="/">Home
+              </a>
+            </li>
+            <%if (username != 'Guest' && username != 'Admin') {%>
+            <li class="nav-item active">
+              <a class="nav-link" href="/myorders">Account
+                <span class="sr-only">(current)</span>
+              </a>
+            <%}%>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" onclick="" href="">PS4</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" onclick="" href="">Xbox One</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" onclick="" href="">PC</a>
+            </li>
+            <%if (username == 'Guest' || username == 'Admin') {%>
+            <li class="nav-item">
+              <a class="nav-link" href="registration">Login/Register</a>
+            </li>
+            <%}%>
+            <%if (username != 'Guest') {%>
+            <li class="nav-item">
+              <a class="nav-link" onclick="logout()" href="">Logout</a>
+            </li>
+            <%}%>
+          </ul>
+        </div>
+      </div>
+    </nav>
+
+    <!-- Page Content -->
+    <div class="container">
+
+      <div class="row">
+
+        
+        <!-- /.col-lg-3 -->
+
+        <div class="col-lg-9">
+
+          <div class="card mt-4">
+            <img class="card-img-top img-fluid" src="<%= product.imgpath %>" alt="" >
+            <div class="card-body">
+              <h3 class="card-title"><%= product.name %></h3>
+              <h4><%= product.price %> EGP</h4>
+              <p class="card-text"><%= product.description %></p>
+              <h4>Available stock: <%= product.stock %> </h4>
+              <h4>Platform:
+               <% if (product.platform == 0) {%>PC<%}%> 
+               <% if (product.platform == 1) {%>PS4<%}%>
+               <% if (product.platform == 2) {%>Xbox One<%}%>
+             </h4>
+            </div>
+          </div>
+          <!-- /.card -->
+
+
+        </div>
+        <!-- /.col-lg-9 -->
+
+      </div>
+
+    </div>
+    <br><br>
+    <!-- /.container -->
+
+    <!-- Footer -->
+    <footer class="py-5 bg-dark">
+      <div class="container">
+        <p class="m-0 text-center text-white">Copyright &copy; Your Website 2017</p>
+      </div>
+      <!-- /.container -->
+    </footer>
+
+    <!-- Bootstrap core JavaScript -->
+    <script src="vendor/jquery/jquery.min.js"></script>
+    <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+  </body>
+
+</html>
