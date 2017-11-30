@@ -53,7 +53,10 @@ app.get('/orders', handlers.viewOrders);
 app.get('/account', handlers.account);
 app.get('/updateorder', handlers.updateOrder);
 app.post('/updateaddress', handlers.updateAddress);
-app.get('/product/:id',handlers.viewProduct)
+app.get('/product/:id',handlers.viewProduct);
+app.get('/products', handlers.allProducts);
+app.post('/updateproduct', handlers.updateProduct);
+app.get('/deleteproduct', handlers.deleteProduct);
 // start server on the specified port and binding host
 app.listen('8000', '0.0.0.0', function() {
   // print a message when the server starts listening

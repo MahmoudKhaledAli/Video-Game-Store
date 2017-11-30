@@ -25,6 +25,10 @@ var viewOrders = function(req, res) {
       console.log(err);
       orders = [];
       orders.push({});
+      if (rows.length == 0) {
+        res.render('../static/orders.ejs', { orders: []} );
+        return;
+      }
       orders[0].idorder = rows[0].idorder;
       orders[0].status = rows[0].status;
       orders[0].username = rows[0].username;

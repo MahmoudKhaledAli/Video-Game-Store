@@ -12,5 +12,8 @@ module.exports = {
   account: user.account,
   updateOrder: admin.updateOrder,
   updateAddress: user.updateAddress,
-  viewProduct: product.viewProduct
+  viewProduct: product.viewProduct,
+  allProducts: product.allProducts,
+  updateProduct: product.updateProduct,
+  deleteProduct: product.deleteProduct,
 }
