@@ -16,4 +16,9 @@ module.exports = {
   allProducts: product.allProducts,
   updateProduct: product.updateProduct,
   deleteProduct: product.deleteProduct,
+  cart: user.cart,
+  updateItem: user.updateItem,
+  deleteItem: user.deleteItem,
+  placeOrder: user.placeOrder,
+  getCoupon: user.getCoupon,
 }

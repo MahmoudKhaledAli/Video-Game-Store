@@ -1,6 +1,7 @@
 var sqlConnector = require('./sqlConnector.js');
 var ejs = require('ejs');
 var path = require('path');
+var async = require('async');
 
 var register = function(req, res) {
   console.log(req.body);
@@ -116,6 +117,7 @@ var account = function(req, res) {
       orders[0].status = rows[0].status;
       orders[0].username = rows[0].username;
       orders[0].datecreated = rows[0].datecreated;
+      orders[0].total = rows[0].total
       orders[0].items = [];
       for (var i = 0; i < rows.length; i++) {
         if (rows[i].idorder == orders[orders.length - 1].idorder) {
@@ -126,10 +128,11 @@ var account = function(req, res) {
           orders[orders.length - 1].status = rows[i].status;
           orders[orders.length - 1].username = rows[i].username;
           orders[orders.length - 1].datecreated = rows[i].datecreated;
+          orders[orders.length - 1].total = rows[i].total;
           orders[orders.length - 1].items = [{idproduct: rows[i].idproduct, name: rows[i].name, quantity: rows[i].quantity}];
         }
       }
-      console.log(orders[0].items);
+      console.log(orders[0]);
       connection.query("SELECT address FROM user WHERE username = ?",
       [req.userSession.username],
       function(err, rows) {
@@ -153,6 +156,112 @@ var updateAddress = function(req, res) {
   });
 };
 
+var cart = function(req, res) {
+  sqlConnector.getConnection(function(err, connection) {
+    console.log(err);
+    connection.query("SELECT * FROM `games`.`cart` INNER JOIN product On `games`.`cart`.idproduct = product.idproduct WHERE username = ?",
+    [req.userSession.username],
+    function(err, rows) {
+      console.log(rows);
+      total = 0;
+      for (var i = 0; i < rows.length; i++) {
+        total += rows[i].total = (100 - rows[i].sale) * rows[i].price * rows[i].quantity / 100;
+      }
+      res.render('../static/cart.ejs', { cart: rows, username: req.userSession.username, total: total });
+      connection.release();
+      return;
+    });
+  });
+};
+
+var updateItem = function(req, res) {
+  sqlConnector.getConnection(function(err, connection) {
+    console.log(err);
+    connection.query("UPDATE cart SET quantity = ? WHERE idproduct = ? AND username = ?",
+    [req.body.quantity, req.body.id, req.userSession.username],
+    function(err, rows) {
+      console.log(rows);
+      connection.release();
+      res.end();
+      return;
+    });
+  });
+};
+
+var deleteItem = function(req, res) {
+  sqlConnector.getConnection(function(err, connection) {
+    console.log(err);
+    console.log(req.query.id);
+    connection.query("DELETE FROM cart WHERE idproduct = ? AND username = ?",
+    [req.query.id, req.userSession.username],
+    function(err, rows) {
+      console.log(rows);
+      connection.release();
+      res.end();
+      return;
+    });
+  });
+};
+
+var placeOrder = function(req, res) {
+  sqlConnector.getConnection(function(err, connection) {
+    console.log(err);
+    console.log(req.query.id);
+    console.log(req.query.total);
+    connection.query("SELECT MAX(idorder) FROM `games`.`order`",
+    function(err, rows) {
+      newID = rows[0]['MAX(idorder)'] + 1;
+      console.log(newID);
+      connection.query("SELECT * FROM cart WHERE username = ?",
+      [req.userSession.username],
+      function(err, rows1) {
+        console.log(rows1);
+        async.forEach(rows1, function(row, callback) {
+          console.log(row);
+          connection.query("INSERT INTO `games`.`order` (idorder, username, idproduct, quantity, status, datecreated, total) values (?,?,?,?,?,?,?)",
+          [newID, req.userSession.username, row.idproduct, row.quantity, 0, new Date(), req.query.total], function(err, rows2) {
+            console.log(rows2);
+            connection.query("UPDATE `games`.`product` SET SALES = SALES + 1 WHERE idproduct = ?",
+            [row.idproduct],
+            function(err, rows) {
+              callback();
+            });
+          });
+        }, function(err) {
+          console.log("done");
+          connection.query("DELETE FROM cart WHERE username = ?",
+          [req.userSession.username],
+          function (err, rows) {
+            connection.release();
+            res.end();
+            return;
+          });
+        });
+      });
+    });
+  });
+};
+
+var getCoupon = function(req, res) {
+  sqlConnector.getConnection(function(err, connection) {
+    console.log(err);
+    console.log(req.query.coupon);
+    connection.query("SELECT * FROM coupon WHERE idcoupon = ?",
+    [req.query.coupon],
+    function(err, rows) {
+      console.log(rows);
+      if (rows.length == 0) {
+        connection.release();
+        res.send('0');
+      } else {
+        connection.release();
+        console.log((rows[0]['discount']));
+        res.send((rows[0]['discount']).toString());
+      }
+    });
+  });
+};
+
 module.exports = {
   register: register,
   login: login,
@@ -161,4 +270,9 @@ module.exports = {
   ban: ban,
   account: account,
   updateAddress: updateAddress,
+  cart: cart,
+  updateItem: updateItem,
+  deleteItem: deleteItem,
+  placeOrder: placeOrder,
+  getCoupon: getCoupon,
 }

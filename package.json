@@ -11,7 +11,8 @@
 		"mysql": "",
 		"body-parser": "",
 		"ejs": "",
-		"client-sessions": ""
+		"client-sessions": "",
+		"async": ""
 	},
 	"repository": {},
 	"engines": {

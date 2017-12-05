@@ -57,6 +57,11 @@ app.get('/product/:id',handlers.viewProduct);
 app.get('/products', handlers.allProducts);
 app.post('/updateproduct', handlers.updateProduct);
 app.get('/deleteproduct', handlers.deleteProduct);
+app.get('/cart', handlers.cart);
+app.post('/updateitem', handlers.updateItem);
+app.get('/deleteitem', handlers.deleteItem);
+app.get('/placeorder', handlers.placeOrder);
+app.get('/coupon', handlers.getCoupon);
 // start server on the specified port and binding host
 app.listen('8000', '0.0.0.0', function() {
   // print a message when the server starts listening

@@ -95,6 +95,7 @@
                                 <th><span>Items</span></th>
                                 <th><span>Created</span></th>
                                 <th><span>Status</span></th>
+                                <th><span>Total</span></th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -121,9 +122,9 @@
                                       Delivered
                                       <%}%>
                                     </td>
+                                    <td><%=orders[i].total%></td> 
                                 </tr>
                                 <%}%>
-
                             </tbody>
                         </table>
                     </div>

@@ -76,6 +76,7 @@
                                 <th><span>Items</span></th>
                                 <th><span>Created</span></th>
                                 <th style="width: 20%;"><span>Username</span></th>
+                                <th style="width: 20%;"><span>Total</span></th>
                                 <th style="width: 20%;"><span>Status</span></th>
                                 <th>&nbsp;</th>
                                 </tr>
@@ -96,6 +97,7 @@
                                     <td>
                                         <a href="#"><%=orders[i].username%></a>
                                     </td>
+                                    <td><%=orders[i].total%></td>
                                     <td>
                                       <div class="form-group">
                                         <select id="<%=orders[i].idorder%>st" class="form-control" id="sel1" style="width: 55%;">

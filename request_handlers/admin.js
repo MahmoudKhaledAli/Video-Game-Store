@@ -33,6 +33,7 @@ var viewOrders = function(req, res) {
       orders[0].status = rows[0].status;
       orders[0].username = rows[0].username;
       orders[0].datecreated = rows[0].datecreated;
+      orders[0].total = rows[0].total
       orders[0].items = [];
       for (var i = 0; i < rows.length; i++) {
         if (rows[i].idorder == orders[orders.length - 1].idorder) {
@@ -43,6 +44,7 @@ var viewOrders = function(req, res) {
           orders[orders.length - 1].status = rows[i].status;
           orders[orders.length - 1].username = rows[i].username;
           orders[orders.length - 1].datecreated = rows[i].datecreated;
+          orders[orders.length - 1].total = rows[i].total;
           orders[orders.length - 1].items = [{idproduct: rows[i].idproduct, name: rows[i].name, quantity: rows[i].quantity}];
         }
       }

@@ -28,7 +28,7 @@ function banUnBanUser(button) {
 
 function logout() {
   $.get("logout", function(data) {
-    window.location.replace("/")
+    window.location.replace("/");
   });
 }
 
