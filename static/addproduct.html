@@ -35,7 +35,8 @@
           price: $("#price").val(),
           stock: $("#stock").val(),
           img: $("#img").val(),
-          platform: $("#platform").val()
+          platform: $("#platform").val(),
+          description: $("#description").val()
 
         }
         $.post('insertproduct', formValues, function(data) {
@@ -51,6 +52,7 @@
             $("#stock").val('');
             $("#img").val('');
             $("#platform").val(0);
+            $("#description").val();
           }});
         }});
       });
@@ -140,7 +142,7 @@
 <div class="form-group">
     <label class="control-label col-sm-2" for="exampleFormControlSelect1">Description:</label>
     <div class="col-sm-10">
-    <textarea class="form-control" name="description" rows="8" cols="80"></textarea>
+    <textarea class="form-control" name="description" id="description" rows="8" cols="80"></textarea>
   </div>
 </div>
 

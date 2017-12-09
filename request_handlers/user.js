@@ -66,9 +66,9 @@ var login = function(req, res) {
 
 function renderHomePage(req, res, connection) {
   console.log(req.userSession)
-  connection.query("SELECT * FROM product ORDER BY sales DESC", function(err, rows_sellers) {
+  connection.query("SELECT * FROM product ORDER BY sales DESC LIMIT 4", function(err, rows_sellers) {
     console.log(rows_sellers);
-    connection.query("SELECT product.*, AVG(reviews.score) FROM product LEFT JOIN reviews ON product.idproduct = reviews.idproduct GROUP BY product.idproduct ORDER BY AVG(reviews.score) DESC",
+    connection.query("SELECT product.*, AVG(reviews.score) FROM product LEFT JOIN reviews ON product.idproduct = reviews.idproduct GROUP BY product.idproduct ORDER BY AVG(reviews.score) LIMIT 4",
     function(err, rows_rating) {
       console.log(rows_rating);
       if (!req.userSession.username) {
@@ -226,7 +226,8 @@ var deleteItem = function(req, res) {
       function(err, rows) {
         console.log(rows);
         connection.query("UPDATE product SET stock = stock + ? WHERE idproduct = ?",
-        [quantity, req.query.id], function(err, rows) {
+        [quantity, req.query.id],
+        function(err, rows) {
           console.log(rows);
           connection.release();
           res.end();
@@ -300,6 +301,18 @@ var getCoupon = function(req, res) {
   });
 };
 
+var browse = function(req, res) {
+  sqlConnector.getConnection(function(err, connection) {
+    connection.query("SELECT * FROM product ORDER BY idproduct ASC LIMIT 10 OFFSET ?",
+    [req.query.no * 10],
+    function(err, rows) {
+      console.log(rows);
+      connection.release();
+      res.render('../static/browse.ejs', { username: (req.userSession.username)?req.userSession.username:'Guest', products: rows });
+    })
+  });
+}
+
 module.exports = {
   register: register,
   login: login,
@@ -313,4 +326,5 @@ module.exports = {
   deleteItem: deleteItem,
   placeOrder: placeOrder,
   getCoupon: getCoupon,
+  browse: browse,
 }

@@ -28,4 +28,5 @@ module.exports = {
   addProduct: admin.addProduct,
   addProductPage: admin.addProductPage,
   addToCart: product.addToCart,
+  browse: user.browse,
 }

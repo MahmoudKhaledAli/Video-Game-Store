@@ -73,7 +73,7 @@
       <header class="jumbotron my-4">
         <h1 class="display-3">Hello there!</h1>
         <p class="lead">Welcome to our video game store.</p>
-        <a href="#" class="btn btn-primary btn-lg">Browse!</a>
+        <a href="/browse?no=0" class="btn btn-primary btn-lg">Browse!</a>
       </header>
 
 
@@ -83,11 +83,12 @@
       <div class="row text-center jumbotron my-4">
         <div align='center' style="margin-bottom: 30px;">
           <h2>Top Sellers</h2>
+          <br>
         </div>
         <%for (var i = 0; i < sellers.length; i++) { %>
           <div class="col-lg-3 col-md-6 mb-4">
             <div class="card">
-              <img class="card-img-top" src="<%= ratings[i].imgpath %>" width="150">
+              <img class="card-img-top" src="<%= ratings[i].imgpath %>" width="150" height="180">
               <div class="card-body">
                 <h4 class="card-title"><%= sellers[i].name %></h4>
                 <a href="product/<%= sellers[i].idproduct %>" class="btn btn-primary">More Details</a>
@@ -104,11 +105,12 @@
       <div class="row text-center jumbotron my-4">
         <div align='center' style="margin-bottom: 30px;">
           <h2>Highest Rated</h2>
+          <br>
         </div>
         <%for (var i = 0; i < ratings.length; i++) { %>
           <div class="col-lg-3 col-md-6 mb-4">
             <div class="card">
-              <img class="card-img-top" src="<%= ratings[i].imgpath %>" alt="" width="150">
+              <img class="card-img-top" src="<%= ratings[i].imgpath %>" alt="" width="150" height="180">
               <div class="card-body">
                 <h4 class="card-title"><%= ratings[i].name %></h4>
                 <a href="product/<%= ratings[i].idproduct %>" class="btn btn-primary">More Details</a>

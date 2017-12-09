@@ -125,8 +125,8 @@ var updateCoupon = function(req, res) {
 var addProduct = function(req, res) {
   console.log(req.body);
   sqlConnector.getConnection(function(err, connection) {
-    connection.query("INSERT INTO product (name, price, stock, imgpath, platform) values (?, ?, ?, ?, ?)",
-    [req.body.name, req.body.price, req.body.stock, req.body.img, req.body.platform],
+    connection.query("INSERT INTO product (name, price, stock, imgpath, platform, descripton) values (?, ?, ?, ?, ?, ?)",
+    [req.body.name, req.body.price, req.body.stock, req.body.img, req.body.platform, req.body.description],
     function(err, rows) {
       console.log(err);
       if (err) {
