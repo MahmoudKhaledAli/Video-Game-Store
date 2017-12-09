@@ -303,13 +303,26 @@ var getCoupon = function(req, res) {
 
 var browse = function(req, res) {
   sqlConnector.getConnection(function(err, connection) {
-    connection.query("SELECT * FROM product ORDER BY idproduct ASC LIMIT 10 OFFSET ?",
-    [req.query.no * 10],
-    function(err, rows) {
-      console.log(rows);
-      connection.release();
-      res.render('../static/browse.ejs', { username: (req.userSession.username)?req.userSession.username:'Guest', products: rows });
-    })
+    console.log(req.query.platform);
+    if (req.query.platform == -1) {
+      connection.query("SELECT * FROM product ORDER BY idproduct",
+      function(err, rows) {
+        connection.release();
+        pageNo = req.query.no;
+        pages = Math.ceil(rows.length / 6);
+        res.render('../static/browse.ejs', { username: (req.userSession.username)?req.userSession.username:'Guest', products: rows.splice(req.query.no*6, (req.query.no+1)*6), pageNo: pageNo, pages: pages, platform: req.query.platform });
+      });
+    } else {
+      connection.query("SELECT * FROM product WHERE platform = ? ORDER BY idproduct",
+      [req.query.platform],
+      function(err, rows) {
+        console.log(rows);
+        connection.release();
+        pageNo = req.query.no;
+        pages = Math.ceil(rows.length / 6);
+        res.render('../static/browse.ejs', { username: (req.userSession.username)?req.userSession.username:'Guest', products: rows.splice(req.query.no*6, (req.query.no+1)*6), pageNo: pageNo, pages: pages, platform: req.query.platform });
+      });
+    }
   });
 }
 

@@ -67,16 +67,16 @@
 
     <!-- Page Content -->
     <div class="container">
-
       <div class="row">
 
         <div class="col-lg-3">
 
-          <h1 class="my-4">Shop Name</h1>
+          <h1 class="my-4">Video Game Store</h1>
           <div class="list-group">
-            <a href="#" class="list-group-item">Category 1</a>
-            <a href="#" class="list-group-item">Category 2</a>
-            <a href="#" class="list-group-item">Category 3</a>
+            <a href="/browse?no=0&platform=-1" class="list-group-item">All</a>
+            <a href="/browse?no=0&platform=0" class="list-group-item">PC</a>
+            <a href="/browse?no=0&platform=1" class="list-group-item">PS4</a>
+            <a href="/browse?no=0&platform=2" class="list-group-item">Xbox One</a>
           </div>
 
         </div>
@@ -110,6 +110,26 @@
     <!-- /.container -->
 
     <!-- Footer -->
+    <br>
+    <div class="" align="center">
+      <ul class="pagination pagination-lg">
+        <%if (pageNo != 0) {%>
+          <li><a href="browse?no=<%=pageNo-1%>&platform=<%=platform%>">Previous</a></li>
+        <%}%>
+        <%for (var i = 0; i < pages; i++) {%>
+          <%if (pageNo == i) {%>
+            <li class="active"><a href="browse?no=<%=i%>&platform=<%=platform%>"><%=i+1%></a></li>
+          <%} else {%>
+            <li><a href="browse?no=<%=i%>&platform=<%=platform%>"><%=i+1%></a></li>
+          <%}%>
+        <%}%>
+        <%if (pageNo != pages - 1) {%>
+          <li><a href="browse?no=<%=pageNo+1%>&platform=<%=platform%>">Next</a></li>
+        <%}%>
+      </ul>
+    </div>
+
+
     <footer class="py-5 bg-dark">
       <div class="container">
         <p class="m-0 text-center text-white">Copyright &copy; Your Website 2017</p>
