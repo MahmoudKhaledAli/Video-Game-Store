@@ -181,14 +181,33 @@ var cart = function(req, res) {
 
 var updateItem = function(req, res) {
   sqlConnector.getConnection(function(err, connection) {
+    console.log('update item');
     console.log(err);
-    connection.query("UPDATE cart SET quantity = ? WHERE idproduct = ? AND username = ?",
-    [req.body.quantity, req.body.id, req.userSession.username],
-    function(err, rows) {
-      console.log(rows);
-      connection.release();
-      res.end();
-      return;
+    connection.query("SELECT quantity FROM cart WHERE idproduct = ? AND username = ?",
+    [req.body.id, req.userSession.username], function(err, rows) {
+      oldQuantity = rows[0].quantity;
+      connection.query("SELECT stock FROM product WHERE idproduct = ?",
+      [req.body.id],
+      function(err, rows) {
+        console.log(rows[0].stock);
+        if (rows[0].stock >= req.body.quantity - oldQuantity) {
+          connection.query("UPDATE cart SET quantity = ? WHERE idproduct = ? AND username = ?",
+          [req.body.quantity, req.body.id, req.userSession.username],
+          function(err, rows) {
+            console.log(rows);
+            console.log(req.body.quantity - oldQuantity);
+            connection.query("UPDATE product SET stock = stock - ? + ? WHERE idproduct = ?",
+            [req.body.quantity, oldQuantity, req.body.id],
+            function(err, rows) {
+              connection.release();
+              res.end('1');
+            });
+          });
+        } else {
+          connection.release();
+          res.end('0');
+        }
+      });
     });
   });
 };
@@ -197,13 +216,23 @@ var deleteItem = function(req, res) {
   sqlConnector.getConnection(function(err, connection) {
     console.log(err);
     console.log(req.query.id);
-    connection.query("DELETE FROM cart WHERE idproduct = ? AND username = ?",
+    connection.query('SELECT quantity FROM cart WHERE idproduct = ? AND username = ?',
     [req.query.id, req.userSession.username],
     function(err, rows) {
-      console.log(rows);
-      connection.release();
-      res.end();
-      return;
+      quantity = parseInt(rows[0].quantity);
+      console.log(quantity);
+      connection.query("DELETE FROM cart WHERE idproduct = ? AND username = ?",
+      [req.query.id, req.userSession.username],
+      function(err, rows) {
+        console.log(rows);
+        connection.query("UPDATE product SET stock = stock + ? WHERE idproduct = ?",
+        [quantity, req.query.id], function(err, rows) {
+          console.log(rows);
+          connection.release();
+          res.end();
+          return;
+        });
+      });
     });
   });
 };

@@ -14,13 +14,30 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
 
     <!-- Custom styles for this template -->
-    <link href="css/shop-item.css" rel="stylesheet">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-    <script type="text/javascript" src="assets/js/user.js"></script>
+    <script type="text/javascript" src="/assets/js/user.js"></script>
     <script src="/sweetalert2/dist/sweetalert2.all.min.js"></script>
     <link rel="stylesheet" href="/css/users-list.css">
 
+    <script type="text/javascript">
+    $(document).ready(function() {
+      $("#add-cart").submit(function(e) {
+        console.log($(this));
+        e.preventDefault();
+        $.get('/addcart', {id: <%=product.idproduct%>, quantity: $("#quantity").val() }, function(data) {
+          console.log(data);
+          if (data == '0') {
+            swal({title: 'Not Enough Stock', type: 'error', onClose: function(elem) {
+            }});
+          } else {
+          swal({title: 'Item Added to Cart', type: 'success', onClose: function(elem) {
+            window.location.replace('/product/<%=product.idproduct%>');
+          }});
+        }});
+      });
+    });
+    </script>
 
   </head>
 
@@ -37,12 +54,15 @@
               </a>
             </li>
             <%if (username != 'Guest' && username != 'Admin') {%>
-            <li class="nav-item active">
-              <a class="nav-link" href="/myorders">Account
-                <span class="sr-only">(current)</span>
+            <li class="nav-item">
+              <a class="nav-link" href="/account">Account
               </a>
-            <%}%>
             </li>
+            <li class="nav-item">
+              <a class="nav-link" href="/cart">Cart
+              </a>
+            </li>
+            <%}%>
             <li class="nav-item">
               <a class="nav-link" onclick="" href="">PS4</a>
             </li>
@@ -54,12 +74,12 @@
             </li>
             <%if (username == 'Guest' || username == 'Admin') {%>
             <li class="nav-item">
-              <a class="nav-link" href="/registration">Login/Register</a>
+              <a class="nav-link" href="registration">Login/Register</a>
             </li>
             <%}%>
             <%if (username != 'Guest') {%>
             <li class="nav-item">
-              <a class="nav-link" onclick="logout()" href="">Logout</a>
+              <a class="nav-link" href="" id="logout-button">Logout</a>
             </li>
             <%}%>
           </ul>
@@ -68,7 +88,7 @@
     </nav>
 
     <!-- Page Content -->
-    <div class="container" style="margin-left:200px">
+    <div class="container">
 
       <div class="row">
 
@@ -80,40 +100,49 @@
             <!-- <div class="col-lg-4">
 
             </div> -->
-            <div class="col-lg-6">
-              <br><br>
-              <img class="card-img-top img-fluid" src="<%= product.imgpath %>" alt="" width="500">
+            <div class="col-lg-6" align="center"  style="padding-left:110px">
+              <h1 class="card-title"><%= product.name %></h1>
+              <br>
+              <img class="card-img-top img-fluid img-rounded img-responsive" src="<%= product.imgpath %>" alt="" width="450">
             </div>
-            <div class="card-body col-lg-6" align="left">
-              <h3 class="card-title"><%= product.name %></h3>
-              <br>
-              <h4><%= product.price %> EGP</h4>
-              <br>
+            <div class="card-body col-lg-6" style="padding-left:80px" align="left">
+              <br><br><br><br><br>
+              <h2><%= product.price %> EGP</h2>
               <p class="card-text"><%= product.description %></p>
               <h4>Available stock: <%= product.stock %> </h4>
-              <br>
               <h4>Platform:
                <% if (product.platform == 0) {%>PC<%}%>
                <% if (product.platform == 1) {%>PS4<%}%>
                <% if (product.platform == 2) {%>Xbox One<%}%>
              </h4>
-             <br>
-             <form action="/action_page.php">
+             <% if (username != 'Guest') {%>
+               <form action="" id="add-cart">
               <div class="form-group">
                 <input type="number" class="form-control" id="quantity" style="width:100px">
               </div>
               <button type="submit" class="btn btn-primary btn-lg">Add To Cart</button>
             </form>
             </div>
+            <%}%>
+
             <!-- <div class="col-lg-9">
 
             </div> -->
           </div>
+
+
           <!-- /.card -->
 
 
         <!-- /.col-lg-9 -->
 
+      </div>
+<br>
+      <div class="row">
+        <div class="col-lg-12">
+          <h1>Description:</h1>
+          <big><p><%= product.descripton %></p></big>
+        </div>
       </div>
 
     </div>
@@ -129,8 +158,8 @@
     </footer>
 
     <!-- Bootstrap core JavaScript -->
-    <script src="vendor/jquery/jquery.min.js"></script>
-    <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="/vendor/jquery/jquery.min.js"></script>
+    <script src="/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
 
   </body>
 

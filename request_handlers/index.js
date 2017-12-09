@@ -27,4 +27,5 @@ module.exports = {
   updateCoupon: admin.updateCoupon,
   addProduct: admin.addProduct,
   addProductPage: admin.addProductPage,
+  addToCart: product.addToCart,
 }

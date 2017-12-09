@@ -19,19 +19,20 @@ $(document).ready(function() {
 
 
 function updateItem(id, quantity) {
-  $.post('updateitem', { id: id, quantity: quantity }, function(data) {
+  $.post('/updateitem', { id: id, quantity: quantity }, function(data) {
     console.log("done");
-    swal('Item updated', '', 'success', function() {
-      window.location.replace("/cart");
-    });
-  });
+    if (data == '0') {
+      swal('Not Enough Stock', '', 'error');
+    } else {
+      swal({title: 'Item Updated', type: 'success', onClose: function(elem) {
+        window.location.replace('/cart');}});
+    }});
 }
 
 function deleteItem(id) {
   $.get('deleteitem', { id: id }, function(data) {
-    swal({'Item deleted', '', 'success', onClose: function(elem) {
-      window.location.replace("/cart");
-    }});
+    swal({title:'Item deleted', type:'success', onClose: function(elem) {
+      window.location.replace("/cart");}});
   });
 }
 
@@ -42,9 +43,8 @@ function placeOrder(name) {
       swal("Coupon doesn't exist", '', 'error')
     } else {
       $.get('placeorder', { total: (100 - data) * parseInt($("#ordertotal").text().replace("Total: ", '')) / 100 }, function(data) {
-        swal({'Order placed', '', 'success', onClose: function(elem) {
-          window.location.replace("/cart");
-        }});
+        swal({title:'Order placed', type:'success', onClose: function(elem) {
+          window.location.replace("/cart");}});
       });
     };
   });

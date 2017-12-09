@@ -67,9 +67,38 @@ var deleteProduct = function(req, res) {
 	});
 };
 
+var addToCart = function(req, res) {
+	console.log(req.query.id);
+	console.log('adding to cart');
+	sqlConnector.getConnection(function(err, connection) {
+		connection.query("SELECT stock FROM product WHERE idproduct = ?",
+		[req.query.id],
+		function (err, rows) {
+			console.log(rows);
+			if (rows[0].stock >= req.query.quantity) {
+				connection.query("INSERT INTO cart (username, idproduct, quantity) values (?, ?, ?) ON DUPLICATE KEY UPDATE quantity = quantity + ?",
+				[req.userSession.username, req.query.id, req.query.quantity, req.query.quantity],
+				function(err, rows_2) {
+					connection.query("UPDATE product SET stock = stock - ? WHERE idproduct = ?",
+					[req.query.quantity, req.query.id],
+					function(err, rows_3) {
+						connection.release();
+						res.end('1');
+					}
+				)
+				});
+			} else {
+				connection.release();
+				res.end('0');
+			}
+		});
+	});
+};
+
 module.exports = {
 	viewProduct: viewProduct,
 	allProducts: allProducts,
 	updateProduct: updateProduct,
 	deleteProduct: deleteProduct,
+	addToCart: addToCart,
 };

@@ -42,11 +42,15 @@
             </li>
             <%if (username != 'Guest' && username != 'Admin') {%>
             <li class="nav-item active">
-              <a class="nav-link" href="/myorders">Account
+              <a class="nav-link" href="/account">Account
                 <span class="sr-only">(current)</span>
               </a>
-            <%}%>
             </li>
+            <li class="nav-item">
+              <a class="nav-link" href="/cart">Cart
+              </a>
+            </li>
+            <%}%>
             <li class="nav-item">
               <a class="nav-link" onclick="" href="">PS4</a>
             </li>
@@ -63,7 +67,7 @@
             <%}%>
             <%if (username != 'Guest') {%>
             <li class="nav-item">
-              <a class="nav-link" onclick="logout()" href="">Logout</a>
+              <a class="nav-link" href="" id="logout-button">Logout</a>
             </li>
             <%}%>
           </ul>
@@ -122,7 +126,7 @@
                                       Delivered
                                       <%}%>
                                     </td>
-                                    <td><%=orders[i].total%></td> 
+                                    <td><%=orders[i].total%></td>
                                 </tr>
                                 <%}%>
                             </tbody>

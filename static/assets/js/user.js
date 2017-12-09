@@ -8,6 +8,13 @@ $(document).ready(function() {
     e.preventDefault();
     updateAddress($("#form-address").val());
   });
+  $("#logout-button").click(function(e) {
+    e.preventDefault();
+    $.get("/logout", function(data) {
+      console.log(data);
+      window.location.replace("/");
+    });
+  });
 });
 
 function banUnBanUser(button) {
@@ -27,7 +34,9 @@ function banUnBanUser(button) {
 }
 
 function logout() {
-  $.get("logout", function(data) {
+  console.log('logging out');
+  $.get("/logout", function(data) {
+    console.log(data);
     window.location.replace("/");
   });
 }
