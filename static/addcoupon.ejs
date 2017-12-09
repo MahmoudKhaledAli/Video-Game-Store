@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>Shop Homepage - Start Bootstrap Template</title>
+
+    <!-- Bootstrap core CSS -->
+
+    <!-- <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet"> -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+
+    <!-- Custom styles for this template -->
+    <!-- <link href="css/shop-homepage.css" rel="stylesheet"> -->
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="assets/js/user.js"></script>
+    <script type="text/javascript" src="assets/js/coupons.js"></script>
+    <script src="/sweetalert2/dist/sweetalert2.all.min.js"></script>
+    <link rel="stylesheet" href="/css/users-list.css">
+
+    <script type="text/javascript">
+    $(document).ready(function() {
+      $("#coupon-form").submit(function(e) {
+        console.log($(this));
+        e.preventDefault();
+        $.post('insertcoupon', {name: $("#name").val(), amnt: $("#amnt").val(), discnt: $("#discnt").val() }, function(data) {
+          console.log(data);
+          if (data == '0') {
+            swal({title: 'Coupon already exists', type: 'error', onClose: function(elem) {
+              window.location.replace('/addcoupon');
+            }});
+          } else {
+          swal({title: 'Coupon added', type: 'success', onClose: function(elem) {
+            window.location.replace('/addcoupon');
+          }});
+        }});
+      });
+    });
+    </script>
+
+
+  </head>
+
+  <body>
+
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-dark navbar-inverse fixed-top">
+      <div class="container">
+        <a class="navbar-brand" href="#">Welcome, Admin</a>
+        <div class="" id="navbarResponsive">
+          <ul class="navbar-nav nav ml-auto navbar-right">
+            <li class="nav-item active">
+              <a class="nav-link" href="/">Home
+                <span class="sr-only">(current)</span>
+              </a>
+            </li>
+            <li class="nav-item">
+              <li class="nav-item">
+                <a class="nav-link" onclick="" href="">PS4</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" onclick="" href="">Xbox One</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" onclick="" href="">PC</a>
+              </li>
+              <li>
+              <a class="nav-link" onclick="logout()" href="">Logout</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+
+    <!-- Page Content -->
+
+    <hr>
+<div class="container bootstrap snippet">
+  <h1 align=center>Add a coupon</h1>
+  <br>
+  <!-- <input type="text" name="search" placeholder="Search.."> -->
+  <form class="form-horizontal" action="/insertcoupon" method="post" id="coupon-form">
+<div class="form-group">
+  <label class="control-label col-sm-2" for="email">Coupon Name:</label>
+  <div class="col-sm-10">
+    <input type="text" class="form-control" id="name" placeholder="Enter coupon name">
+  </div>
+</div>
+<div class="form-group">
+  <label class="control-label col-sm-2" for="pwd">Coupon Amount:</label>
+  <div class="col-sm-10">
+    <input type="number" class="form-control" id="amnt" placeholder="Enter coupon amount">
+  </div>
+</div>
+
+<div class="form-group">
+  <label class="control-label col-sm-2" for="pwd">Coupon Discount:</label>
+  <div class="col-sm-10">
+    <input type="text" class="form-control" id="discnt" placeholder="Enter coupon discount">
+  </div>
+</div>
+<div class="form-group">
+  <div class="col-sm-offset-2 col-sm-10">
+    <button type="submit" class="btn btn-primary btn-lg">Submit</button>
+  </div>
+</div>
+</form>
+
+<div class="row">
+    <div class="col-lg-12">
+      <h3>Current Coupons</h3>
+
+        <div class="main-box no-header clearfix">
+            <div class="main-box-body clearfix">
+                <div class="table-responsive">
+                    <table class="table user-list">
+                        <thead>
+                            <tr>
+                            <th style=""><span>Name</span></th>
+                            <th style="padding-left:130px"><span>Amount</span></th>
+                            <th style="padding-left:70px"><span>Discount</span></th>
+                            <th "width: 20%;">&nbsp;</th>
+                            <th "width: 20%;">&nbsp;</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                          <%for (var i = 0; i < coupons.length; i++) {%>
+                            <tr id="row<%=coupons[i].idcoupon%>">
+                              <td>
+                                <%=coupons[i].idcoupon%>
+                              </td>
+                                <form class="form-group updateo" id="<%=coupons[i].idcoupon%>">
+                                  <td style="padding-left:100px">
+                                    <input style="width: 50%;" class="form-control" type="number" name="amount" value="<%=coupons[i].amount%>">
+                                  </td>
+                                  <td style="padding-left:50px">
+                                    <input style="width: 50%;" class="form-control" type="text" name="discount" value="<%=coupons[i].discount%>">
+                                  </td>
+                                  <td>
+                                    <td style="width: 20%;">
+                                        <input type="submit" action="" method="get" class="btn btn-primary btn-md" value="Update Coupon">
+                                    </td>
+                                  </td>
+                                </form>
+                                <td>
+                                  <button id="delete<%=coupons[i].idcoupon%>" "width: 20%;" type="button" class="btn btn-danger btn-md delete">Delete Coupon</button>
+                                </td>
+                            </tr>
+                            <%}%>
+
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+    </br>
+    <!-- /.container -->
+
+    <!-- Footer -->
+    <footer class="py-5 bg-dark">
+      <div class="container">
+        <p class="m-0 text-center text-white">Copyright &copy; Your Website 2017</p>
+      </div>
+      <!-- /.container -->
+    </footer>
+
+    <!-- Bootstrap core JavaScript -->
+    <script src="vendor/jquery/jquery.min.js"></script>
+    <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+  </body>
+
+</html>

@@ -11,7 +11,7 @@ var renderProduct = function(req, res, connection) {
 		}
 		else {
 			if (!req.userSession.username) {
-		        res.render('../static/product.ejs', { username: 'Guest', product: rows });
+		        res.render('../static/product.ejs', { username: 'Guest', product: rows[0] });
 		    }
 		    else {
 		        res.render('../static/product.ejs', { username: req.userSession.username, product: rows[0] });

@@ -21,4 +21,10 @@ module.exports = {
   deleteItem: user.deleteItem,
   placeOrder: user.placeOrder,
   getCoupon: user.getCoupon,
+  addCoupon: admin.addCoupon,
+  addCouponPage: admin.addCouponPage,
+  deleteCoupon: admin.deleteCoupon,
+  updateCoupon: admin.updateCoupon,
+  addProduct: admin.addProduct,
+  addProductPage: admin.addProductPage,
 }

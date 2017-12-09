@@ -11,7 +11,6 @@ var viewUsers = function(req, res) {
       console.log(err);
       console.log(rows[0]);
       connection.release();
-      console.log(rows[0].datecreated);
       res.render('../static/users.ejs', { users: rows });
     });
   });
@@ -48,7 +47,6 @@ var viewOrders = function(req, res) {
           orders[orders.length - 1].items = [{idproduct: rows[i].idproduct, name: rows[i].name, quantity: rows[i].quantity}];
         }
       }
-      console.log(orders[0].items);
       connection.release();
       res.render('../static/orders.ejs', { orders: orders });
     });
@@ -68,8 +66,92 @@ var updateOrder = function(req, res) {
   });
 };
 
+var addCoupon = function(req, res) {
+  // console.log(req.body);
+  sqlConnector.getConnection(function(err, connection) {
+    connection.query("INSERT INTO coupon (idcoupon, discount, amount) values (?, ?, ?)",
+    [req.body.name, req.body.discnt, req.body.amnt],
+    function(err, rows) {
+      console.log(err);
+      if (err) {
+        connection.release();
+        res.send('0');
+        return;
+      }
+      connection.release();
+      res.send('1');
+    });
+  });
+};
+
+var addCouponPage = function(req, res) {
+  sqlConnector.getConnection(function(err, connection) {
+		connection.query("SELECT * FROM coupon",
+		function (err, rows) {
+			console.log(rows);
+      res.render('../static/addcoupon.ejs', {coupons: rows})
+			connection.release();
+			res.end();
+		});
+	});
+};
+
+var deleteCoupon = function(req, res) {
+	console.log(req.body);
+	sqlConnector.getConnection(function(err, connection) {
+		connection.query("DELETE FROM coupon WHERE idcoupon = ?",
+		[req.query.id],
+		function (err, rows) {
+			console.log(rows);
+			connection.release();
+			res.end();
+		});
+	});
+};
+
+var updateCoupon = function(req, res) {
+	console.log(req.body);
+	sqlConnector.getConnection(function(err, connection) {
+		connection.query("UPDATE coupon SET amount = ?, discount = ? WHERE idcoupon = ?",
+		[req.body.amount, req.body.discount, req.body.id],
+		function (err, rows) {
+			console.log(rows);
+			connection.release();
+			res.end();
+		});
+	});
+};
+
+var addProduct = function(req, res) {
+  console.log(req.body);
+  sqlConnector.getConnection(function(err, connection) {
+    connection.query("INSERT INTO product (name, price, stock, imgpath, platform) values (?, ?, ?, ?, ?)",
+    [req.body.name, req.body.price, req.body.stock, req.body.img, req.body.platform],
+    function(err, rows) {
+      console.log(err);
+      if (err) {
+        connection.release();
+        res.send('0');
+        return;
+      }
+      connection.release();
+      res.send('1');
+    });
+  });
+};
+
+var addProductPage = function(req, res) {
+  res.sendFile(path.resolve(__dirname+'/../static/addproduct.html'));
+};
+
 module.exports = {
   viewUsers: viewUsers,
   viewOrders: viewOrders,
   updateOrder: updateOrder,
+  addCoupon: addCoupon,
+  addCouponPage: addCouponPage,
+  deleteCoupon: deleteCoupon,
+  updateCoupon: updateCoupon,
+  addProduct: addProduct,
+  addProductPage: addProductPage,
 }

@@ -5,7 +5,7 @@ $(document).ready(function() {
     $.each($(this).serializeArray(), function(i, field) {
     values[field.name] = parseFloat(field.value);
     });
-    values['id'] = parseInt(this.id);
+    values['id'] = this.id;
     console.log(values);
     updateProduct(values);
   });
@@ -16,14 +16,14 @@ $(document).ready(function() {
 
 
 function updateProduct(values) {
-  $.post('updateproduct', { price: values['price'], stock: values['stock'], sale: values['sale'], id: values['id'] }, function(data) {
-    swal('Product updated', '', 'success');
+  $.post('updatecoupon', { amount: values['amount'], discount: values['discount'], id: values['id'] }, function(data) {
+    swal('Coupon updated', '', 'success');
   });
 }
 
 function deleteProduct(id) {
-  $.get('deleteproduct', { id: id }, function(data) {
+  $.get('deletecoupon', { id: id }, function(data) {
     $("#row" + id).remove();
-    swal('Product deleted', '', 'success');
+    swal('Coupon deleted', '', 'success');
   });
 }

@@ -70,13 +70,13 @@ CREATE TABLE IF NOT EXISTS `games`.`cart` (
   CONSTRAINT `product`
     FOREIGN KEY (`idproduct`)
     REFERENCES `games`.`product` (`idproduct`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
+    ON DELETE CASCADE
+    ON UPDATE CASCADE,
   CONSTRAINT `user`
     FOREIGN KEY (`username`)
     REFERENCES `games`.`user` (`username`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE)
 ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8;
 
@@ -119,10 +119,35 @@ CREATE TABLE IF NOT EXISTS `games`.`order` (
   CONSTRAINT `orderuser`
     FOREIGN KEY (`username`)
     REFERENCES `games`.`user` (`username`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE)
 ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8;
+
+
+-- -----------------------------------------------------
+-- Table `games`.`reviews`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `games`.`reviews` ;
+
+CREATE TABLE IF NOT EXISTS `games`.`reviews` (
+  `username` VARCHAR(20) NOT NULL,
+  `idproduct` INT NOT NULL,
+  `score` INT NOT NULL,
+  `comment` TEXT NULL,
+  PRIMARY KEY (`username`, `idproduct`),
+  INDEX `product_review_idx` (`idproduct` ASC),
+  CONSTRAINT `product_review`
+    FOREIGN KEY (`idproduct`)
+    REFERENCES `games`.`product` (`idproduct`)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE,
+  CONSTRAINT `user_review`
+    FOREIGN KEY (`username`)
+    REFERENCES `games`.`user` (`username`)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE)
+ENGINE = InnoDB;
 
 
 SET SQL_MODE=@OLD_SQL_MODE;

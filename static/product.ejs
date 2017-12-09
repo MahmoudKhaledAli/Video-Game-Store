@@ -54,7 +54,7 @@
             </li>
             <%if (username == 'Guest' || username == 'Admin') {%>
             <li class="nav-item">
-              <a class="nav-link" href="registration">Login/Register</a>
+              <a class="nav-link" href="/registration">Login/Register</a>
             </li>
             <%}%>
             <%if (username != 'Guest') {%>
@@ -68,33 +68,50 @@
     </nav>
 
     <!-- Page Content -->
-    <div class="container">
+    <div class="container" style="margin-left:200px">
 
       <div class="row">
 
 
         <!-- /.col-lg-3 -->
 
-        <div class="col-lg-9">
 
           <div class="card mt-4">
-            <img class="card-img-top img-fluid" src="<%= product.imgpath %>" alt="" >
-            <div class="card-body">
+            <!-- <div class="col-lg-4">
+
+            </div> -->
+            <div class="col-lg-6">
+              <br><br>
+              <img class="card-img-top img-fluid" src="<%= product.imgpath %>" alt="" width="500">
+            </div>
+            <div class="card-body col-lg-6" align="left">
               <h3 class="card-title"><%= product.name %></h3>
+              <br>
               <h4><%= product.price %> EGP</h4>
+              <br>
               <p class="card-text"><%= product.description %></p>
               <h4>Available stock: <%= product.stock %> </h4>
+              <br>
               <h4>Platform:
-               <% if (product.platform == 0) {%>PC<%}%> 
+               <% if (product.platform == 0) {%>PC<%}%>
                <% if (product.platform == 1) {%>PS4<%}%>
                <% if (product.platform == 2) {%>Xbox One<%}%>
              </h4>
+             <br>
+             <form action="/action_page.php">
+              <div class="form-group">
+                <input type="number" class="form-control" id="quantity" style="width:100px">
+              </div>
+              <button type="submit" class="btn btn-primary btn-lg">Add To Cart</button>
+            </form>
             </div>
+            <!-- <div class="col-lg-9">
+
+            </div> -->
           </div>
           <!-- /.card -->
 
 
-        </div>
         <!-- /.col-lg-9 -->
 
       </div>

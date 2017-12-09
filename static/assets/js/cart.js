@@ -29,9 +29,9 @@ function updateItem(id, quantity) {
 
 function deleteItem(id) {
   $.get('deleteitem', { id: id }, function(data) {
-    swal('Item deleted', '', 'success', function() {
+    swal({'Item deleted', '', 'success', onClose: function(elem) {
       window.location.replace("/cart");
-    });
+    }});
   });
 }
 
@@ -42,9 +42,9 @@ function placeOrder(name) {
       swal("Coupon doesn't exist", '', 'error')
     } else {
       $.get('placeorder', { total: (100 - data) * parseInt($("#ordertotal").text().replace("Total: ", '')) / 100 }, function(data) {
-        swal("Order placed", '', 'success', function() {
+        swal({'Order placed', '', 'success', onClose: function(elem) {
           window.location.replace("/cart");
-        });
+        }});
       });
     };
   });

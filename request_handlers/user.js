@@ -66,15 +66,20 @@ var login = function(req, res) {
 
 function renderHomePage(req, res, connection) {
   console.log(req.userSession)
-  connection.query("SELECT * FROM product ORDER BY sales DESC", function(err, rows) {
+  connection.query("SELECT * FROM product ORDER BY sales DESC", function(err, rows_sellers) {
+    console.log(rows_sellers);
+    connection.query("SELECT product.*, AVG(reviews.score) FROM product LEFT JOIN reviews ON product.idproduct = reviews.idproduct GROUP BY product.idproduct ORDER BY AVG(reviews.score) DESC",
+    function(err, rows_rating) {
+      console.log(rows_rating);
       if (!req.userSession.username) {
-        res.render('../static/home.ejs', { username: 'Guest', sellers: rows });
+        res.render('../static/home.ejs', { username: 'Guest', sellers: rows_sellers, ratings: rows_rating });
       } else if (req.userSession.username != 'Admin') {
-        res.render('../static/home.ejs', { username: req.userSession.username, sellers: rows });
+        res.render('../static/home.ejs', { username: req.userSession.username, sellers: rows_sellers, ratings: rows_rating });
       } else {
         res.sendFile(path.resolve(__dirname+'/../static/admin.html'));
       }
       connection.release();
+    });
   });
 }
 
@@ -254,9 +259,13 @@ var getCoupon = function(req, res) {
         connection.release();
         res.send('0');
       } else {
-        connection.release();
-        console.log((rows[0]['discount']));
-        res.send((rows[0]['discount']).toString());
+        connection.query("UPDATE coupon SET amount = amount - 1 WHERE idcoupon = ?",
+        [req.query.coupon],
+        function(err, rows2) {
+          connection.release();
+          console.log((rows[0]['discount']));
+          res.send((rows[0]['discount']).toString());
+        });
       }
     });
   });
