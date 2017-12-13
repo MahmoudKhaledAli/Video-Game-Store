@@ -3,6 +3,10 @@ var ejs = require('ejs');
 var path = require('path');
 
 var viewUsers = function(req, res) {
+  if (req.userSession.username != 'Admin') {
+    res.status(404);
+    res.end('Not found');
+  }
   console.log(req.body);
   sqlConnector.getConnection(function(err, connection) {
     console.log(err);
@@ -17,6 +21,10 @@ var viewUsers = function(req, res) {
 };
 
 var viewOrders = function(req, res) {
+  if (req.userSession.username != 'Admin') {
+    res.status(404);
+    res.end('Not found');
+  }
   sqlConnector.getConnection(function(err, connection) {
     console.log(err);
     connection.query("SELECT * FROM `games`.`order` INNER JOIN product On `games`.`order`.idproduct = product.idproduct ORDER BY datecreated DESC, idorder",
@@ -54,6 +62,10 @@ var viewOrders = function(req, res) {
 };
 
 var updateOrder = function(req, res) {
+  if (req.userSession.username != 'Admin') {
+    res.status(404);
+    res.end('Not found');
+  }
   sqlConnector.getConnection(function(err, connection) {
     console.log(err);
     connection.query("UPDATE `games`.`order` SET status = ? WHERE idorder = ?",
@@ -68,6 +80,10 @@ var updateOrder = function(req, res) {
 
 var addCoupon = function(req, res) {
   // console.log(req.body);
+  if (req.userSession.username != 'Admin') {
+    res.status(404);
+    res.end('Not found');
+  }
   sqlConnector.getConnection(function(err, connection) {
     connection.query("INSERT INTO coupon (idcoupon, discount, amount) values (?, ?, ?)",
     [req.body.name, req.body.discnt, req.body.amnt],
@@ -85,6 +101,10 @@ var addCoupon = function(req, res) {
 };
 
 var addCouponPage = function(req, res) {
+  if (req.userSession.username != 'Admin') {
+    res.status(404);
+    res.end('Not found');
+  }
   sqlConnector.getConnection(function(err, connection) {
 		connection.query("SELECT * FROM coupon",
 		function (err, rows) {
@@ -97,6 +117,10 @@ var addCouponPage = function(req, res) {
 };
 
 var deleteCoupon = function(req, res) {
+  if (req.userSession.username != 'Admin') {
+    res.status(404);
+    res.end('Not found');
+  }
 	console.log(req.body);
 	sqlConnector.getConnection(function(err, connection) {
 		connection.query("DELETE FROM coupon WHERE idcoupon = ?",
@@ -110,6 +134,10 @@ var deleteCoupon = function(req, res) {
 };
 
 var updateCoupon = function(req, res) {
+  if (req.userSession.username != 'Admin') {
+    res.status(404);
+    res.end('Not found');
+  }
 	console.log(req.body);
 	sqlConnector.getConnection(function(err, connection) {
 		connection.query("UPDATE coupon SET amount = ?, discount = ? WHERE idcoupon = ?",
@@ -123,6 +151,10 @@ var updateCoupon = function(req, res) {
 };
 
 var addProduct = function(req, res) {
+  if (req.userSession.username != 'Admin') {
+    res.status(404);
+    res.end('Not found');
+  }
   console.log(req.body);
   sqlConnector.getConnection(function(err, connection) {
     connection.query("INSERT INTO product (name, price, stock, imgpath, platform, descripton) values (?, ?, ?, ?, ?, ?)",
@@ -141,6 +173,10 @@ var addProduct = function(req, res) {
 };
 
 var addProductPage = function(req, res) {
+  if (req.userSession.username != 'Admin') {
+    res.status(404);
+    res.end('Not found');
+  }
   res.sendFile(path.resolve(__dirname+'/../static/addproduct.html'));
 };
 

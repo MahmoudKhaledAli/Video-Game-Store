@@ -68,7 +68,7 @@ function renderHomePage(req, res, connection) {
   console.log(req.userSession)
   connection.query("SELECT * FROM product ORDER BY sales DESC LIMIT 4", function(err, rows_sellers) {
     console.log(rows_sellers);
-    connection.query("SELECT product.*, AVG(reviews.score) FROM product LEFT JOIN reviews ON product.idproduct = reviews.idproduct GROUP BY product.idproduct ORDER BY AVG(reviews.score) LIMIT 4",
+    connection.query("SELECT product.*, AVG(reviews.score) FROM product LEFT JOIN reviews ON product.idproduct = reviews.idproduct GROUP BY product.idproduct ORDER BY AVG(reviews.score) DESC LIMIT 4",
     function(err, rows_rating) {
       console.log(rows_rating);
       if (!req.userSession.username) {
@@ -97,6 +97,10 @@ var logout = function(req, res) {
 };
 
 var ban = function(req, res) {
+  if (req.userSession.username != 'Admin') {
+    res.status(404);
+    res.end('Not found');
+  }
   console.log(req.query.username);
   sqlConnector.getConnection(function(err, connection) {
     connection.query("UPDATE user SET banned = banned ^ 1 WHERE username = ?",
@@ -110,6 +114,10 @@ var ban = function(req, res) {
 }
 
 var account = function(req, res) {
+  if (!req.userSession.username) {
+    res.status(404);
+    res.end('Not found');
+  }
   sqlConnector.getConnection(function(err, connection) {
     console.log(err);
     connection.query("SELECT * FROM `games`.`order` INNER JOIN product On `games`.`order`.idproduct = product.idproduct WHERE username = ? ORDER BY datecreated DESC, idorder",
@@ -151,6 +159,10 @@ var account = function(req, res) {
 };
 
 var updateAddress = function(req, res) {
+  if (!req.userSession.username) {
+    res.status(404);
+    res.end('Not found');
+  }
   sqlConnector.getConnection(function(err, connection) {
     connection.query("UPDATE user SET address = ? WHERE username = ?",
     [req.body.address, req.userSession.username],
@@ -162,6 +174,10 @@ var updateAddress = function(req, res) {
 };
 
 var cart = function(req, res) {
+  if (!req.userSession.username) {
+    res.status(404);
+    res.end('Not found');
+  }
   sqlConnector.getConnection(function(err, connection) {
     console.log(err);
     connection.query("SELECT * FROM `games`.`cart` INNER JOIN product On `games`.`cart`.idproduct = product.idproduct WHERE username = ?",
@@ -180,6 +196,10 @@ var cart = function(req, res) {
 };
 
 var updateItem = function(req, res) {
+  if (!req.userSession.username) {
+    res.status(404);
+    res.end('Not found');
+  }
   sqlConnector.getConnection(function(err, connection) {
     console.log('update item');
     console.log(err);
@@ -213,6 +233,10 @@ var updateItem = function(req, res) {
 };
 
 var deleteItem = function(req, res) {
+  if (!req.userSession.username) {
+    res.status(404);
+    res.end('Not found');
+  }
   sqlConnector.getConnection(function(err, connection) {
     console.log(err);
     console.log(req.query.id);
@@ -239,6 +263,10 @@ var deleteItem = function(req, res) {
 };
 
 var placeOrder = function(req, res) {
+  if (!req.userSession.username) {
+    res.status(404);
+    res.end('Not found');
+  }
   sqlConnector.getConnection(function(err, connection) {
     console.log(err);
     console.log(req.query.id);

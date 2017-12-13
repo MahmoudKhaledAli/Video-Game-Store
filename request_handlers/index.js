@@ -29,4 +29,6 @@ module.exports = {
   addProductPage: admin.addProductPage,
   addToCart: product.addToCart,
   browse: user.browse,
+  addReview: product.addReview,
+  deleteReview: product.deleteReview,
 }

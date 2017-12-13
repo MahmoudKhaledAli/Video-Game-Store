@@ -56,21 +56,13 @@
         <a class="navbar-brand" href="#">Welcome, Admin</a>
         <div class="" id="navbarResponsive">
           <ul class="navbar-nav nav ml-auto navbar-right">
-            <li class="nav-item active">
+            <li class="nav-item">
               <a class="nav-link" href="/">Home
-                <span class="sr-only">(current)</span>
               </a>
             </li>
             <li class="nav-item">
-              <li class="nav-item">
-                <a class="nav-link" onclick="" href="">PS4</a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" onclick="" href="">Xbox One</a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" onclick="" href="">PC</a>
-              </li>
+              <a class="nav-link" onclick="" href="/browse?no=0&platform=-1">Browse</a>
+            </li>
               <li>
               <a class="nav-link" href="" id="logout-button">Logout</a>
             </li>
@@ -98,14 +90,14 @@
                             <thead>
                                 <tr>
                                 <th><span>ID</span></th>
-                                <th><span>Name</span></th>
+                                <th><span style="width:200%;padding-left:190px;margin-left:-190px;">Name</span></th>
                                 <th><span>Platform</span></th>
-                                <th><span>Sales</span></th>
-                                <th style="width: 15%;"><span>Price</span></th>
-                                <th style="width: 15%;"><span>Stock</span></th>
-                                <th style="width: 15%;"><span>Sale %</span></th>
-                                <th "width: 20%;">&nbsp;</th>
-                                <th "width: 20%;">&nbsp;</th>
+                                <th><span style="padding-right:-100px">Sales</span></th>
+                                <th style="width: 15%;padding-left:120px"><span>Price</span></th>
+                                <th style="width: 15%;padding-left:120px"><span>Stock</span></th>
+                                <th style="width: 15%;padding-left:120px"><span>Sale</span></th>
+                                <th style="width:0%;padding-left:-50px">&nbsp;</th>
+                                <th style="width:0%;padding-left:-50px">&nbsp;</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -114,31 +106,31 @@
                                   <td>
                                     <%=products[i].idproduct%>
                                   </td>
-                                    <td><%=products[i].name%></td>
+                                    <td style="width:200%"><%=products[i].name%></td>
                                     <td>
                                       <% if (products[i].platform == 0) {%>PC<%}%>
                                       <% if (products[i].platform == 1) {%>PS4<%}%>
                                       <% if (products[i].platform == 2) {%>Xbox One<%}%>
                                     </td>
-                                    <td><%=products[i].sales%></td>
+                                    <td style="padding-left:10px"><%=products[i].sales%></td>
                                     <form class="form-group updateo" id="<%=products[i].idproduct%>">
                                       <td>
-                                        <input style="width: 50%;" class="form-control" type="text" name="price" value="<%=products[i].price%>">
+                                        <input style="width: 70%;margin-left:100px" class="form-control" type="text" name="price" value="<%=products[i].price%>">
                                       </td>
                                       <td>
-                                        <input style="width: 50%;" class="form-control" type="number" name="stock" value="<%=products[i].stock%>">
+                                        <input style="width: 70%;margin-left:100px" class="form-control" type="number" name="stock" value="<%=products[i].stock%>">
                                       </td>
                                       <td>
-                                        <input style="width: 50%;" class="form-control" type="text" name="sale" value="<%=products[i].sale%>">
+                                        <input style="width: 70%;margin-left:100px" class="form-control" type="text" name="sale" value="<%=products[i].sale%>">
                                       </td>
                                       <td>
                                         <td style="width: 20%;">
-                                            <input type="submit" action="" method="get" class="btn btn-primary btn-md" value="Update Product">
+                                            <input type="submit" action="" method="get" style="margin-left:40px" class="btn btn-primary btn-md" value="Update Product">
                                         </td>
                                       </td>
                                     </form>
                                     <td>
-                                      <button id="delete<%=products[i].idproduct%>" "width: 20%;" type="button" class="btn btn-danger btn-md delete">Delete Product</button>
+                                      <button id="delete<%=products[i].idproduct%>" style="margin-left:10px" type="button" class="btn btn-danger btn-md delete">Delete Product</button>
                                     </td>
                                 </tr>
                                 <%}%>
