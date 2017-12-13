@@ -42,6 +42,10 @@ function logout() {
 }
 
 function updateAddress(newAddress) {
+  if (newAddress == '') {
+    swal('Update failed!', 'Please enter an address.', 'error');
+    return;
+  }
   $.post('updateaddress', { address: newAddress }, function(data) {
     swal('Address updated', '', 'success');
   });

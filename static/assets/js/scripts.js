@@ -1,35 +1,20 @@
+function ValidateEmail(mail)
+{
+ if (/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(mail))
+  {
+    return (true);
+  }
+    return (false);
+}
 
 jQuery(document).ready(function() {
 
-    /*
-        Login form validation
-    */
-    $('.login-form input[type="text"], .login-form input[type="password"], .login-form textarea').on('focus', function() {
-    	$(this).removeClass('input-error');
-    });
-
-    $('.login-form').on('submit', function(e) {
-
-    	$(this).find('input[type="text"], input[type="password"], textarea').each(function(){
-    		if( $(this).val() == "" ) {
-    			e.preventDefault();
-    			$(this).addClass('input-error');
-    		}
-    		else {
-    			$(this).removeClass('input-error');
-    		}
-    	});
-
-    });
-
-    /*
-        Registration form validation
-    */
-    $('.registration-form input[type="text"], .registration-form textarea').on('focus', function() {
-    	$(this).removeClass('input-error');
-    });
-
-    $("#login-form").submit(function() {
+    $("#login-form").submit(function(e) {
+      e.preventDefault();
+      if ($("#login-username").val() == "" || $("#login-password").val() == "") {
+        swal('Login failed!', 'Please enter username and password', 'error');
+        return;
+      }
       $.post("login", { username: $("#login-username").val(), password: $("#login-password").val() }, function(data) {
         console.log(data);;
         if (data == '0') {
@@ -43,7 +28,27 @@ jQuery(document).ready(function() {
       return false;
     });
 
-    $("#register-form").submit(function() {
+    $("#register-form").submit(function(e) {
+      e.preventDefault();
+      if ($("#form-username-reg").val() == 'Guest') {
+        swal('Registration failed!', 'Username can\'t be Guest.', 'error');
+        return;
+      } else if ($("#form-username-reg").val() == 'Admin') {
+        swal('Registration failed!', 'Username can\'t be Admin.', 'error');
+        return;
+      } else if ($("#form-username-reg").val() == "") {
+        swal('Registration failed!', 'Please enter a username.', 'error');
+      }
+      if (!ValidateEmail($("#form-email").val())) {
+        swal('Registration failed!', 'Please enter a valid email address.', 'error');
+        return;
+      }
+      if ($("#form-password-reg").val().length < 6) {
+        swal('Registration failed!', 'Password must be at least 6 characters.', 'error');
+      }
+      if ($("#form-address").val() == '') {
+        swal('Registration failed!', 'Please enter your address.', 'error');
+      }
       $.post("register",
       { username: $("#form-username-reg").val(),
         password: $("#form-password-reg").val(),

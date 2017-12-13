@@ -8,7 +8,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>Shop Homepage - Start Bootstrap Template</title>
+    <title>Video Game Store - Add a Coupon</title>
 
     <!-- Bootstrap core CSS -->
 
@@ -30,6 +30,18 @@
       $("#coupon-form").submit(function(e) {
         console.log($(this));
         e.preventDefault();
+        if ($("#name").val() == '') {
+          swal('Coupon not added!', 'Please enter a coupon name', 'error');
+          return;
+        }
+        if ($("#amnt").val() < 0) {
+          swal('Coupon not added!', 'Please enter a valid amount', 'error');
+          return;
+        }
+        if ($("#discnt").val() == '' || parseFloat($("#discnt").val()) < 0 || parseFloat($("#discnt").val()) > 100) {
+          swal('Coupon not added!', 'Please enter a valid discount percentage', 'error');
+          return;
+        }
         $.post('insertcoupon', {name: $("#name").val(), amnt: $("#amnt").val(), discnt: $("#discnt").val() }, function(data) {
           console.log(data);
           if (data == '0') {

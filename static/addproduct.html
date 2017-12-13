@@ -8,7 +8,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>Shop Homepage - Start Bootstrap Template</title>
+    <title>Video Game Store - Add a Product</title>
 
     <!-- Bootstrap core CSS -->
 
@@ -37,7 +37,22 @@
           img: $("#img").val(),
           platform: $("#platform").val(),
           description: $("#description").val()
-
+        };
+        if (formValues.name == '') {
+          swal('Product not added!', 'Please enter a product name', 'error');
+          return;
+        }
+        if (formValues.price == '' || parseFloat(formValues.price) < 0) {
+          swal('Product not added!', 'Please enter a valid price', 'error');
+          return;
+        }
+        if (formValues.stock < 0) {
+          swal('Product not added!', 'Please enter a valid value for stock', 'error');
+          return;
+        }
+        if (formValues.desciption == '') {
+          swal('Product not added!', 'Please enter a product description', 'error');
+          return;
         }
         $.post('insertproduct', formValues, function(data) {
           console.log(data);

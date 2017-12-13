@@ -19,6 +19,10 @@ $(document).ready(function() {
 
 
 function updateItem(id, quantity) {
+  if (quantity < 0) {
+    swal('Update failed!', 'Please enter a valid quantity', 'error');
+    return;
+  }
   $.post('/updateitem', { id: id, quantity: quantity }, function(data) {
     console.log("done");
     if (data == '0') {
