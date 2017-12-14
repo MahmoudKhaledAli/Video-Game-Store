@@ -347,24 +347,27 @@ var getCoupon = function(req, res) {
 var browse = function(req, res) {
   sqlConnector.getConnection(function(err, connection) {
     console.log(req.query.platform);
+    console.log(req.query.field);
+    console.log(req.query.order);
     if (req.query.platform == -1) {
-      connection.query("SELECT * FROM product WHERE name LIKE ? ORDER BY idproduct",
+      connection.query("SELECT *, AVG(reviews.score) AS avg_score FROM product LEFT JOIN reviews ON product.idproduct = reviews.idproduct WHERE name LIKE ? GROUP BY product.idproduct ORDER BY " + req.query.field + " " + req.query.order,
       ['%' + req.query.name + '%'],
       function(err, rows) {
+        console.log(err);
         connection.release();
         pageNo = req.query.no;
         pages = Math.ceil(rows.length / 6);
-        res.render('../static/browse.ejs', { username: (req.userSession.username)?req.userSession.username:'Guest', products: rows.splice(req.query.no*6, (req.query.no+1)*6), pageNo: pageNo, pages: pages, platform: req.query.platform });
+        res.render('../static/browse.ejs', { username: (req.userSession.username)?req.userSession.username:'Guest', products: rows.splice(req.query.no*6, (req.query.no+1)*6), pageNo: pageNo, pages: pages, platform: req.query.platform, field: req.query.field, order: req.query.order, name: req.query.name });
       });
     } else {
-      connection.query("SELECT * FROM product WHERE platform = ? AND name LIKE ? ORDER BY idproduct",
+      connection.query("SELECT *, AVG(reviews.score) AS avg_score FROM product LEFT JOIN reviews ON product.idproduct = reviews.idproduct WHERE platform = ? AND name LIKE ? GROUP BY product.idproduct ORDER BY " + req.query.field + " " + req.query.order,
       [req.query.platform, '%' + req.query.name + '%'],
       function(err, rows) {
         console.log(rows);
         connection.release();
         pageNo = req.query.no;
         pages = Math.ceil(rows.length / 6);
-        res.render('../static/browse.ejs', { username: (req.userSession.username)?req.userSession.username:'Guest', products: rows.splice(req.query.no*6, (req.query.no+1)*6), pageNo: pageNo, pages: pages, platform: req.query.platform });
+        res.render('../static/browse.ejs', { username: (req.userSession.username)?req.userSession.username:'Guest', products: rows.splice(req.query.no*6, (req.query.no+1)*6), pageNo: pageNo, pages: pages, platform: req.query.platform, field: req.query.field, order: req.query.order, name: req.query.name });
       });
     }
   });

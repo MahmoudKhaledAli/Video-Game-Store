@@ -22,7 +22,7 @@
         $("#search-form").submit(function(e) {
           e.preventDefault();
           console.log("logawy");
-          window.location.replace("/browse?no=0&platform=<%=platform%>&name=" + $("#search-name").val());
+          window.location.replace("/browse?no=0&platform=<%=platform%>&name=" + $("#search-name").val() + "&field=" + $("#field").val() + "&order=" + $("#asc-desc").val());
         });
       });
     </script>
@@ -52,7 +52,7 @@
             </li>
             <%}%>
             <li class="nav-item active">
-              <a class="nav-link" onclick="" href="/browse?no=0&platform=-1&name=">Browse</a>
+              <a class="nav-link" onclick="" href="/browse?no=0&platform=-1&name=&field=product.idproduct&order=desc">Browse</a>
               <span class="sr-only">(current)</span>
             </li>
             <%if (username == 'Guest') {%>
@@ -85,13 +85,42 @@
           </div>
           <form class="form-group" id="search-form" action="" method="get">
             <input class="form-control" id="search-name" type="text" name="name" placeholder="Search by name..">
-            <!-- <br>
+            <br>
             Sort by:<br><br>
-            <select class="form-control" style="width:55%" id="score">
-              <option value='1'>Latest</option>
-              <option value='2'>Highest Rated</option>
-              <option value='3'>Top Sellers</option>
-            </select> -->
+            <select class="form-control" style="width:55%" id="field">
+              <% if (field == 'product.idproduct') {%>
+                <option value='product.idproduct' selected>Latest</option>
+              <%} else {%>
+                <option value='product.idproduct'>Latest</option>
+              <%}%>
+              <% if (field == 'avg_score') {%>
+                <option value='avg_score' selected>Highest Rated</option>
+              <%} else {%>
+                <option value='avg_score'>Highest Rated</option>
+              <%}%>
+              <% if (field == 'sales') {%>
+                <option value='sales' selected>Top Sellers</option>
+              <%} else {%>
+                <option value='sales'>Top Sellers</option>
+              <%}%>
+              <% if (field == 'price') {%>
+                <option value='price' selected>Price</option>
+              <%} else {%>
+                <option value='price'>Price</option>
+              <%}%>
+            </select>
+            <select class="form-control" style="width:55%" id="asc-desc">
+              <% if (field == 'ASC') {%>
+                <option value='ASC' selected>Ascending</option>
+              <%} else {%>
+                <option value='ASC'>Ascending</option>
+              <%}%>
+              <% if (field == 'DESC') {%>
+                <option value='DESC' selected>Descending</option>
+              <%} else {%>
+                <option value='DESC'>Descending</option>
+              <%}%>
+            </select>
           </form>
         </div>
         <!-- /.col-lg-3 -->
@@ -100,37 +129,20 @@
             <br>
           </div>
           <!-- <div class="col-lg-12"> -->
+          <div class="col-lg-12">
             <%for (var i = 0; i < products.length; i++) { %>
               <div class="col-lg-4" align="center" style="margin-bottom:10px;margin-top:10px">
                 <div class="card">
                   <img class="card-img-top" src="<%= products[i].imgpath %>" alt="" width="150" height="180">
                   <div class="card-body">
-                    <h4 class="card-title"><%= products[i].name %></h4>
+                    <h4 class="card-title"><%= products[i].name.slice(0, 21) %></h4>
                     <a href="product/<%= products[i].idproduct %>" class="btn btn-primary">More Details</a>
                   </div>
                 </div>
               </div>
             <% } %>
-            <div class="" align="center">
-              <br><br><br><br>
-              <ul class="pagination pagination-lg">
-                <%if (pageNo != 0  && pages != 0) {%>
-                  <li><a href="browse?no=<%=pageNo-1%>&platform=<%=platform%>">Previous</a></li>
-                <%}%>
-                <%for (var i = 0; i < pages; i++) {%>
-                  <%if (pageNo == i) {%>
-                    <li class="active"><a href="browse?no=<%=i%>&platform=<%=platform%>"><%=i+1%></a></li>
-                  <%} else {%>
-                    <li><a href="browse?no=<%=i%>&platform=<%=platform%>"><%=i+1%></a></li>
-                  <%}%>
-                <%}%>
-                <%if (pageNo != pages - 1 && pages != 0) {%>
-                  <li><a href="browse?no=<%=pageNo+1%>&platform=<%=platform%>">Next</a></li>
-                <%}%>
-              </ul>
-            </div>
-          <!-- </div> -->
-        </div>
+          </div>
+
 
 
         <!-- /.col-lg-9 -->
@@ -142,7 +154,25 @@
     <!-- /.container -->
 
     <!-- Footer -->
-
+    <div class="" style="padding-left:300px" align="center">
+      <ul class="pagination pagination-lg">
+        <%if (pageNo != 0  && pages != 0) {%>
+          <li><a href="browse?no=<%=pageNo-1%>&platform=<%=platform%>">Previous</a></li>
+        <%}%>
+        <%for (var i = 0; i < pages; i++) {%>
+          <%if (pageNo == i) {%>
+            <li class="active"><a href="browse?no=<%=i%>&platform=<%=platform%>"><%=i+1%></a></li>
+          <%} else {%>
+            <li><a href="browse?no=<%=i%>&platform=<%=platform%>"><%=i+1%></a></li>
+          <%}%>
+        <%}%>
+        <%if (pageNo != pages - 1 && pages != 0) {%>
+          <li><a href="browse?no=<%=pageNo+1%>&platform=<%=platform%>">Next</a></li>
+        <%}%>
+      </ul>
+    </div>
+    <!-- </div> -->
+    </div>
 
     <footer class="py-5 bg-dark">
       <div class="container">
