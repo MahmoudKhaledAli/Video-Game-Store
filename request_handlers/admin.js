@@ -27,7 +27,7 @@ var viewOrders = function(req, res) {
   }
   sqlConnector.getConnection(function(err, connection) {
     console.log(err);
-    connection.query("SELECT * FROM `games`.`order` INNER JOIN product ON `games`.`order`.idproduct = product.idproduct INNER JOIN user ON `games`.`order`.username = user.username ORDER BY `games`.`order`.datecreated DESC, idorder",
+    connection.query("SELECT * FROM `games`.`order` INNER JOIN product ON `games`.`order`.idproduct = product.idproduct INNER JOIN user ON `games`.`order`.username = user.username ORDER BY `games`.`order`. status ASC, `games`.`order`.datecreated DESC, idorder",
     function(err, rows) {
       console.log(err);
       orders = [];
@@ -53,12 +53,13 @@ var viewOrders = function(req, res) {
           orders[orders.length - 1].username = rows[i].username;
           orders[orders.length - 1].datecreated = rows[i].datecreated;
           orders[orders.length - 1].total = rows[i].total;
-          orders[orders.length - 1].address = rows[i].adderss;
+          orders[orders.length - 1].address = rows[i].address;
           orders[orders.length - 1].items = [{idproduct: rows[i].idproduct, name: rows[i].name, quantity: rows[i].quantity}];
         }
       }
       connection.release();
       console.log(orders);
+      console.log(rows);
       res.render('../static/orders.ejs', { orders: orders });
     });
   });

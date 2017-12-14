@@ -16,6 +16,16 @@
 
     <!-- Custom styles for this template -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.js"></script> <link rel="stylesheet" href="node_modules/sweetalert/dist/sweetalert.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script type="text/javascript">
+      $(document).ready(function() {
+        $("#search-form").submit(function(e) {
+          e.preventDefault();
+          console.log("logawy");
+          window.location.replace("/browse?no=0&platform=<%=platform%>&name=" + $("#search-name").val());
+        });
+      });
+    </script>
 
   </head>
 
@@ -42,10 +52,10 @@
             </li>
             <%}%>
             <li class="nav-item active">
-              <a class="nav-link" onclick="" href="/browse?no=0&platform=-1">Browse</a>
+              <a class="nav-link" onclick="" href="/browse?no=0&platform=-1&name=">Browse</a>
               <span class="sr-only">(current)</span>
             </li>
-            <%if (username == 'Guest' || username == 'Admin') {%>
+            <%if (username == 'Guest') {%>
             <li class="nav-item">
               <a class="nav-link" href="/registration">Login/Register</a>
             </li>
@@ -68,12 +78,21 @@
 
           <h1 class="my-4">Video Game Store</h1>
           <div class="list-group">
-            <a href="/browse?no=0&platform=-1" class="list-group-item">All</a>
-            <a href="/browse?no=0&platform=0" class="list-group-item">PC</a>
-            <a href="/browse?no=0&platform=1" class="list-group-item">PS4</a>
-            <a href="/browse?no=0&platform=2" class="list-group-item">Xbox One</a>
+            <a href="/browse?no=0&platform=-1&name=" class="list-group-item">All</a>
+            <a href="/browse?no=0&platform=0&name=" class="list-group-item">PC</a>
+            <a href="/browse?no=0&platform=1&name=" class="list-group-item">PS4</a>
+            <a href="/browse?no=0&platform=2&name=" class="list-group-item">Xbox One</a>
           </div>
-
+          <form class="form-group" id="search-form" action="" method="get">
+            <input class="form-control" id="search-name" type="text" name="name" placeholder="Search by name..">
+            <!-- <br>
+            Sort by:<br><br>
+            <select class="form-control" style="width:55%" id="score">
+              <option value='1'>Latest</option>
+              <option value='2'>Highest Rated</option>
+              <option value='3'>Top Sellers</option>
+            </select> -->
+          </form>
         </div>
         <!-- /.col-lg-3 -->
         <div class="col-lg-9">
@@ -92,6 +111,24 @@
                 </div>
               </div>
             <% } %>
+            <div class="" align="center">
+              <br><br><br><br>
+              <ul class="pagination pagination-lg">
+                <%if (pageNo != 0  && pages != 0) {%>
+                  <li><a href="browse?no=<%=pageNo-1%>&platform=<%=platform%>">Previous</a></li>
+                <%}%>
+                <%for (var i = 0; i < pages; i++) {%>
+                  <%if (pageNo == i) {%>
+                    <li class="active"><a href="browse?no=<%=i%>&platform=<%=platform%>"><%=i+1%></a></li>
+                  <%} else {%>
+                    <li><a href="browse?no=<%=i%>&platform=<%=platform%>"><%=i+1%></a></li>
+                  <%}%>
+                <%}%>
+                <%if (pageNo != pages - 1 && pages != 0) {%>
+                  <li><a href="browse?no=<%=pageNo+1%>&platform=<%=platform%>">Next</a></li>
+                <%}%>
+              </ul>
+            </div>
           <!-- </div> -->
         </div>
 
@@ -105,24 +142,6 @@
     <!-- /.container -->
 
     <!-- Footer -->
-    <br>
-    <div class="" align="center">
-      <ul class="pagination pagination-lg">
-        <%if (pageNo != 0) {%>
-          <li><a href="browse?no=<%=pageNo-1%>&platform=<%=platform%>">Previous</a></li>
-        <%}%>
-        <%for (var i = 0; i < pages; i++) {%>
-          <%if (pageNo == i) {%>
-            <li class="active"><a href="browse?no=<%=i%>&platform=<%=platform%>"><%=i+1%></a></li>
-          <%} else {%>
-            <li><a href="browse?no=<%=i%>&platform=<%=platform%>"><%=i+1%></a></li>
-          <%}%>
-        <%}%>
-        <%if (pageNo != pages - 1) {%>
-          <li><a href="browse?no=<%=pageNo+1%>&platform=<%=platform%>">Next</a></li>
-        <%}%>
-      </ul>
-    </div>
 
 
     <footer class="py-5 bg-dark">

@@ -42,7 +42,7 @@
               </a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" onclick="" href="/browse?no=0&platform=-1">Browse</a>
+              <a class="nav-link" onclick="" href="/browse?no=0&platform=-1&name=">Browse</a>
             </li>
               <li>
               <a class="nav-link" href="" id="logout-button">Logout</a>
@@ -93,7 +93,7 @@
                                       <td><%=orders[i].total%></td>
                                       <td>
                                         <div class="form-group">
-                                          <select id="<%=orders[i].idorder%>st" class="form-control" id="sel1" style="width: 55%;">
+                                          <select id="<%=orders[i].idorder%>st" class="form-control" id="sel1" style="width: 70%;">
                                             <%if (orders[i].status == 0) {%>
                                             <option value="0" selected="selected">Pending</option>
                                             <% } else { %>

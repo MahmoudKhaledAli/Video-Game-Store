@@ -6,6 +6,7 @@ $(document).ready(function() {
     updateOrder(orderid, $("#"+orderid+"st").val());
   });
   $(".deleteo").click(function(e) {
+    e.preventDefault();
     deleteOrder(this.id.replace('del', ''))
   });
 });
@@ -18,6 +19,7 @@ function updateOrder(id, newStatus) {
 }
 
 function deleteOrder(id) {
+  console.log("row" + id + "-1");
   $.get('/deleteorder', { id: id }, function(data) {
     console.log("row" + id + "-1");
     $("#row" + id + "-1").remove();

@@ -297,8 +297,8 @@ var placeOrder = function(req, res) {
           connection.query("INSERT INTO `games`.`order` (idorder, username, idproduct, quantity, status, datecreated, total) values (?,?,?,?,?,?,?)",
           [newID, req.userSession.username, row.idproduct, row.quantity, 0, new Date(), req.query.total], function(err, rows2) {
             console.log(rows2);
-            connection.query("UPDATE `games`.`product` SET SALES = SALES + 1 WHERE idproduct = ?",
-            [row.idproduct],
+            connection.query("UPDATE `games`.`product` SET SALES = SALES + ? WHERE idproduct = ?",
+            [row.quantity, row.idproduct],
             function(err, rows) {
               callback();
             });
@@ -333,9 +333,11 @@ var getCoupon = function(req, res) {
         connection.query("UPDATE coupon SET amount = amount - 1 WHERE idcoupon = ?",
         [req.query.coupon],
         function(err, rows2) {
-          connection.release();
-          console.log((rows[0]['discount']));
-          res.send((rows[0]['discount']).toString());
+          connection.query("DELETE FROM coupon WHERE amount = 0", function(err, rows3) {
+            connection.release();
+            console.log((rows[0]['discount']));
+            res.send((rows[0]['discount']).toString());
+          });
         });
       }
     });
@@ -346,7 +348,8 @@ var browse = function(req, res) {
   sqlConnector.getConnection(function(err, connection) {
     console.log(req.query.platform);
     if (req.query.platform == -1) {
-      connection.query("SELECT * FROM product ORDER BY idproduct",
+      connection.query("SELECT * FROM product WHERE name LIKE ? ORDER BY idproduct",
+      ['%' + req.query.name + '%'],
       function(err, rows) {
         connection.release();
         pageNo = req.query.no;
@@ -354,8 +357,8 @@ var browse = function(req, res) {
         res.render('../static/browse.ejs', { username: (req.userSession.username)?req.userSession.username:'Guest', products: rows.splice(req.query.no*6, (req.query.no+1)*6), pageNo: pageNo, pages: pages, platform: req.query.platform });
       });
     } else {
-      connection.query("SELECT * FROM product WHERE platform = ? ORDER BY idproduct",
-      [req.query.platform],
+      connection.query("SELECT * FROM product WHERE platform = ? AND name LIKE ? ORDER BY idproduct",
+      [req.query.platform, '%' + req.query.name + '%'],
       function(err, rows) {
         console.log(rows);
         connection.release();
