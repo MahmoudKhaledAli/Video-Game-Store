@@ -30,7 +30,7 @@ function updateProduct(values) {
 }
 
 function deleteProduct(id) {
-  $.get('deletecoupon', { id: id }, function(data) {
+  $.get('/deletecoupon', { id: id }, function(data) {
     $("#row" + id).remove();
     swal('Coupon deleted', '', 'success');
   });

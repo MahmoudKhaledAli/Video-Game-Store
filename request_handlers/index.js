@@ -31,4 +31,5 @@ module.exports = {
   browse: user.browse,
   addReview: product.addReview,
   deleteReview: product.deleteReview,
+  deleteOrder: admin.deleteOrder,
 }

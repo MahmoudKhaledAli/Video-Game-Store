@@ -34,14 +34,14 @@ function updateItem(id, quantity) {
 }
 
 function deleteItem(id) {
-  $.get('deleteitem', { id: id }, function(data) {
+  $.get('/deleteitem', { id: id }, function(data) {
     swal({title:'Item deleted', type:'success', onClose: function(elem) {
       window.location.replace("/cart");}});
   });
 }
 
 function placeOrder(name) {
-  $.get('coupon', { coupon: name }, function(data) {
+  $.get('/coupon', { coupon: name }, function(data) {
     console.log(data);
     if (data == '0' && name != '') {
       swal("Coupon doesn't exist", '', 'error')

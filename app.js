@@ -72,6 +72,7 @@ app.get('/addcart', handlers.addToCart);
 app.get('/browse', handlers.browse);
 app.post('/addreview', handlers.addReview);
 app.get('/deletereview', handlers.deleteReview);
+app.get('/deleteorder', handlers.deleteOrder);
 
 app.use(function (req, res) {
     res.status(404);

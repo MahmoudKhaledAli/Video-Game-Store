@@ -19,7 +19,7 @@ $(document).ready(function() {
 
 function banUnBanUser(button) {
   console.log(button.id);
-  $.get('banuser', { username: button.id }, function(data) {
+  $.get('/banuser', { username: button.id }, function(data) {
     $(button).toggleClass('btn-danger');
     $(button).toggleClass('btn-info');
     if ($.trim($(button).html()) == 'Ban') {
@@ -46,7 +46,7 @@ function updateAddress(newAddress) {
     swal('Update failed!', 'Please enter an address.', 'error');
     return;
   }
-  $.post('updateaddress', { address: newAddress }, function(data) {
+  $.post('/updateaddress', { address: newAddress }, function(data) {
     swal('Address updated', '', 'success');
   });
 }

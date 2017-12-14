@@ -27,7 +27,7 @@ var viewOrders = function(req, res) {
   }
   sqlConnector.getConnection(function(err, connection) {
     console.log(err);
-    connection.query("SELECT * FROM `games`.`order` INNER JOIN product On `games`.`order`.idproduct = product.idproduct ORDER BY datecreated DESC, idorder",
+    connection.query("SELECT * FROM `games`.`order` INNER JOIN product ON `games`.`order`.idproduct = product.idproduct INNER JOIN user ON `games`.`order`.username = user.username ORDER BY `games`.`order`.datecreated DESC, idorder",
     function(err, rows) {
       console.log(err);
       orders = [];
@@ -40,7 +40,8 @@ var viewOrders = function(req, res) {
       orders[0].status = rows[0].status;
       orders[0].username = rows[0].username;
       orders[0].datecreated = rows[0].datecreated;
-      orders[0].total = rows[0].total
+      orders[0].total = rows[0].total;
+      orders[0].address = rows[0].address;
       orders[0].items = [];
       for (var i = 0; i < rows.length; i++) {
         if (rows[i].idorder == orders[orders.length - 1].idorder) {
@@ -52,10 +53,12 @@ var viewOrders = function(req, res) {
           orders[orders.length - 1].username = rows[i].username;
           orders[orders.length - 1].datecreated = rows[i].datecreated;
           orders[orders.length - 1].total = rows[i].total;
+          orders[orders.length - 1].address = rows[i].adderss;
           orders[orders.length - 1].items = [{idproduct: rows[i].idproduct, name: rows[i].name, quantity: rows[i].quantity}];
         }
       }
       connection.release();
+      console.log(orders);
       res.render('../static/orders.ejs', { orders: orders });
     });
   });
@@ -180,6 +183,27 @@ var addProductPage = function(req, res) {
   res.sendFile(path.resolve(__dirname+'/../static/addproduct.html'));
 };
 
+var deleteOrder = function(req, res) {
+  sqlConnector.getConnection(function(err, connection) {
+    connection.query("SELECT username FROM `games`.`order` WHERE idorder = ?",
+    [req.query.id],
+    function(err, rows) {
+      if (rows[0].username != req.userSession.username && req.userSession.username != 'Admin') {
+        res.status(404);
+        connection.release();
+        res.end('Not found');
+        return;
+      }
+      connection.query("DELETE FROM `games`.`order` WHERE idorder = ?",
+      [req.query.id],
+      function(err, rows) {
+        connection.release();
+        res.end('1');
+      });
+    });
+  });
+};
+
 module.exports = {
   viewUsers: viewUsers,
   viewOrders: viewOrders,
@@ -190,4 +214,5 @@ module.exports = {
   updateCoupon: updateCoupon,
   addProduct: addProduct,
   addProductPage: addProductPage,
+  deleteOrder: deleteOrder,
 }

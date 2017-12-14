@@ -124,36 +124,49 @@ var account = function(req, res) {
     [req.userSession.username],
     function(err, rows) {
       console.log(err);
-      orders = [];
-      orders.push({});
-      orders[0].idorder = rows[0].idorder;
-      orders[0].status = rows[0].status;
-      orders[0].username = rows[0].username;
-      orders[0].datecreated = rows[0].datecreated;
-      orders[0].total = rows[0].total
-      orders[0].items = [];
-      for (var i = 0; i < rows.length; i++) {
-        if (rows[i].idorder == orders[orders.length - 1].idorder) {
-          orders[orders.length - 1].items.push({idproduct: rows[i].idproduct, name: rows[i].name, quantity: rows[i].quantity});
-        } else {
-          orders.push({});
-          orders[orders.length - 1].idorder = rows[i].idorder;
-          orders[orders.length - 1].status = rows[i].status;
-          orders[orders.length - 1].username = rows[i].username;
-          orders[orders.length - 1].datecreated = rows[i].datecreated;
-          orders[orders.length - 1].total = rows[i].total;
-          orders[orders.length - 1].items = [{idproduct: rows[i].idproduct, name: rows[i].name, quantity: rows[i].quantity}];
+      console.log(rows);
+      if (rows.length == 0) {
+        console.log('cond');
+        connection.query("SELECT address FROM user WHERE username = ?",
+        [req.userSession.username],
+        function(err, rows_1) {
+          console.log(err);
+          connection.release();
+          res.render('../static/account.ejs', { orders: [], username: req.userSession.username, address: rows_1[0].address });
+          return;
+        });
+      } else {
+        orders = [];
+        orders.push({});
+        orders[0].idorder = rows[0].idorder;
+        orders[0].status = rows[0].status;
+        orders[0].username = rows[0].username;
+        orders[0].datecreated = rows[0].datecreated;
+        orders[0].total = rows[0].total
+        orders[0].items = [];
+        for (var i = 0; i < rows.length; i++) {
+          if (rows[i].idorder == orders[orders.length - 1].idorder) {
+            orders[orders.length - 1].items.push({idproduct: rows[i].idproduct, name: rows[i].name, quantity: rows[i].quantity});
+          } else {
+            orders.push({});
+            orders[orders.length - 1].idorder = rows[i].idorder;
+            orders[orders.length - 1].status = rows[i].status;
+            orders[orders.length - 1].username = rows[i].username;
+            orders[orders.length - 1].datecreated = rows[i].datecreated;
+            orders[orders.length - 1].total = rows[i].total;
+            orders[orders.length - 1].items = [{idproduct: rows[i].idproduct, name: rows[i].name, quantity: rows[i].quantity}];
+          }
         }
+        console.log(orders[0]);
+        connection.query("SELECT address FROM user WHERE username = ?",
+        [req.userSession.username],
+        function(err, rows) {
+          console.log(err);
+          console.log(rows[0]);
+          connection.release();
+          res.render('../static/account.ejs', { orders: orders, username: req.userSession.username, address: rows[0].address });
+        });
       }
-      console.log(orders[0]);
-      connection.query("SELECT address FROM user WHERE username = ?",
-      [req.userSession.username],
-      function(err, rows) {
-        console.log(err);
-        console.log(rows[0]);
-        connection.release();
-        res.render('../static/account.ejs', { orders: orders, username: req.userSession.username, address: rows[0].address });
-      });
     });
   });
 };
