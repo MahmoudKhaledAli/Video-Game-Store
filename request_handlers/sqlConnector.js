@@ -8,7 +8,7 @@ var mysql = require('mysql');
 var LocaldbConfig = {
     host:"localhost",
     user:"root",
-    password:"",
+    password:"aaaaaa",
     database:"games",
     dateStrings: 'date'
 };

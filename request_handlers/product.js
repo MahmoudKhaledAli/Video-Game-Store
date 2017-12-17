@@ -18,11 +18,11 @@ var renderProduct = function(req, res, connection) {
 			rows[0].idproduct = req.params.id;
 			if (!req.userSession.username) {
 				console.log(rows[0]);
-        res.render('../static/product.ejs', { username: 'Guest', product: rows[0], reviews: rows });
+        res.render('../static/product.ejs', { username: 'Guest', product: rows[0], reviews: (rows[0].username)?rows:[] });
 	    }
 	    else {
 				console.log(rows[0]);
-        res.render('../static/product.ejs', { username: req.userSession.username, product: rows[0], reviews: rows });
+        res.render('../static/product.ejs', { username: req.userSession.username, product: rows[0], reviews: (rows[0].username)?rows:[] });
 	    }
 		}
 		connection.release();

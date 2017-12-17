@@ -28,13 +28,14 @@ CREATE TABLE IF NOT EXISTS `games`.`product` (
   `name` VARCHAR(40) NOT NULL,
   `price` FLOAT NOT NULL,
   `stock` INT(11) NOT NULL,
-  `imgpath` VARCHAR(100) NOT NULL,
-  `sale` FLOAT NOT NULL,
+  `imgpath` VARCHAR(500) NOT NULL,
   `platform` INT(11) NOT NULL,
-  `sales` INT(11) NOT NULL DEFAULT '0',
+  `descripton` TEXT NOT NULL,
+  `sales` INT(11) NULL DEFAULT '0',
+  `sale` FLOAT NULL DEFAULT '0',
   PRIMARY KEY (`idproduct`))
 ENGINE = InnoDB
-AUTO_INCREMENT = 3
+AUTO_INCREMENT = 4
 DEFAULT CHARACTER SET = utf8;
 
 
@@ -132,9 +133,9 @@ DROP TABLE IF EXISTS `games`.`reviews` ;
 
 CREATE TABLE IF NOT EXISTS `games`.`reviews` (
   `username` VARCHAR(20) NOT NULL,
-  `idproduct` INT NOT NULL,
-  `score` INT NOT NULL,
-  `comment` TEXT NULL,
+  `idproduct` INT(11) NOT NULL,
+  `score` INT(11) NOT NULL,
+  `comment` TEXT NULL DEFAULT NULL,
   PRIMARY KEY (`username`, `idproduct`),
   INDEX `product_review_idx` (`idproduct` ASC),
   CONSTRAINT `product_review`
@@ -147,7 +148,8 @@ CREATE TABLE IF NOT EXISTS `games`.`reviews` (
     REFERENCES `games`.`user` (`username`)
     ON DELETE CASCADE
     ON UPDATE CASCADE)
-ENGINE = InnoDB;
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8;
 
 
 SET SQL_MODE=@OLD_SQL_MODE;

@@ -157,17 +157,17 @@
     <div class="" style="padding-left:300px" align="center">
       <ul class="pagination pagination-lg">
         <%if (pageNo != 0  && pages != 0) {%>
-          <li><a href="browse?no=<%=pageNo-1%>&platform=<%=platform%>">Previous</a></li>
+          <li><a href="browse?no=<%=parseInt(pageNo)-1%>&platform=<%=platform%>&name=<%=name%>&field=<%=field%>&order=<%=order%>">Previous</a></li>
         <%}%>
         <%for (var i = 0; i < pages; i++) {%>
           <%if (pageNo == i) {%>
-            <li class="active"><a href="browse?no=<%=i%>&platform=<%=platform%>"><%=i+1%></a></li>
+            <li class="active"><a href="browse?no=<%=i%>&platform=<%=platform%>&name=<%=name%>&field=<%=field%>&order=<%=order%>"><%=i+1%></a></li>
           <%} else {%>
-            <li><a href="browse?no=<%=i%>&platform=<%=platform%>"><%=i+1%></a></li>
+            <li><a href="browse?no=<%=i%>&platform=<%=platform%>&name=<%=name%>&field=<%=field%>&order=<%=order%>"><%=i+1%></a></li>
           <%}%>
         <%}%>
         <%if (pageNo != pages - 1 && pages != 0) {%>
-          <li><a href="browse?no=<%=pageNo+1%>&platform=<%=platform%>">Next</a></li>
+          <li><a href="browse?no=<%=parseInt(pageNo)+1%>&platform=<%=platform%>&name=<%=name%>&field=<%=field%>&order=<%=order%>">Next</a></li>
         <%}%>
       </ul>
     </div>
